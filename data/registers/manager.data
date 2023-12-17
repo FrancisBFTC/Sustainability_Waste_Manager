@@ -1,0 +1,24 @@
+ ID: 0
+ Nome da empresa: Microchip Inc.
+ Investimento mensal : 2000
+ Residuos gerados : Chumbo, bateria lithium
+ É perigoso? : Sim
+ Quant. gerada : 10
+ Data de destinacao : 18/12/2023
+ Data de tratamento : 18/12/2023
+ ID: 1
+ Nome da empresa: Alphabet Inc.
+ Investimento mensal : 3500
+ Residuos gerados : Cloreto de sódio
+ É perigoso?: Não
+ Quant. gerada : 40
+ Data de destinacao : 15/12/2023
+ Data de tratamento : 15/12/2023
+ ID: 2
+ Nome da empresa: Alphabet Inc.
+ Investimento mensal : 1500
+ Residuos gerados : Chumbo
+ É perigoso?: Sim
+ Quant. gerada : 400
+ Data de destinacao : 10/12/2023
+ Data de tratamento : 10/12/2023

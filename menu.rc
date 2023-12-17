@@ -1,0 +1,34 @@
+#include "wastemanager.h"
+
+WasteMenu MENU {
+    POPUP "&Arquivos" {
+        POPUP "&Novo" {
+            POPUP "&Relatórios manuais" {
+                MENUITEM "&Relatório MTR",  MENU_MTR
+                MENUITEM "&Relatório CDF",  MENU_CDF
+                MENUITEM "&Relatório FDSR", MENU_FDSR
+                MENUITEM "&Relatório de Inspeção", MENU_INSPECT
+            }
+            POPUP "&Relatórios automáticos" {
+                MENUITEM "&Insumos semestrais tratados",  MENU_SEMMI_MANUAL
+                MENUITEM "&Gastos e lucros mensais",  MENU_PROFITS
+                MENUITEM "&Produtividade e Resíduos",  MENU_PRODUC
+            }
+        }
+        MENUITEM "&Abrir ...", OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "&Loggoff", LOGGOFF
+    }
+
+    POPUP "&Cadastrar" {
+        MENUITEM "&Cadastrar clientes", MENU_COSTUMER_REG
+        MENUITEM "&Cadastrar funcionários", MENU_WORKER_REG
+        MENUITEM "&Atualizar clientes", MENU_COSTUMER_UPD
+        MENUITEM "&Atualizar resíduos", MENU_WASTE_UPD
+    }
+
+    POPUP "&Ajuda"{
+		MENUITEM "&Sobre o Software", MENU_ABOUT_SOFT
+		MENUITEM "&Tutorial do Software", MENU_TUTORIAL
+	}
+}
