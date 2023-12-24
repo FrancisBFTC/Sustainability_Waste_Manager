@@ -1,78 +1,25 @@
 # depslib dependency file v1.0
-1701141709 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\testprojects\software\wmanagersystem\main.cpp
-	"wastemanager.h"
-
-1701131087 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\testprojects\software\wmanagersystem\wastemanager.h
-	<tchar.h>
-	<windows.h>
-	<Winuser.h>
-	<commctrl.h>
-	<stdlib.h>
-	<stdio.h>
-
-1701131171 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\testprojects\software\menu.rc
-	"WManagerSystem\wastemanager.h"
-
-1701131171 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim\código-fonte do software\menu.rc
-	"WManagerSystem\wastemanager.h"
-
-1701131087 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim\código-fonte do software\wmanagersystem\wastemanager.h
-	<tchar.h>
-	<windows.h>
-	<Winuser.h>
-	<commctrl.h>
-	<stdlib.h>
-	<stdio.h>
-
-1701153268 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim\código-fonte do software\wmanagersystem\main.cpp
-	"wastemanager.h"
-
-1701131171 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\menu.rc
-	"WManagerSystem\wastemanager.h"
-
-1702839715 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\wastemanager.h
-	<tchar.h>
-	<windows.h>
-	<winuser.h>
-	<windowsx.h>
-	<commctrl.h>
-	<stdlib.h>
-	<stdio.h>
-	<sysinfoapi.h>
-
-1702834866 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\main.cpp
+1703388619 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\main.cpp
 	"wastemanager.h"
 	"strsafe.h"
 	"treestruct.h"
 	"linkedlist.h"
+
+1703376433 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\wastemanager.h
+	<tchar.h>
+	<windows.h>
+	<winuser.h>
+	<windowsx.h>
+	<commdlg.h>
+	<commctrl.h>
+	<stdlib.h>
+	<stdio.h>
+	<sysinfoapi.h>
 
 1701374998 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\treestruct.h
 
-1701131171 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\menu.rc
-	"WManagerSystem\wastemanager.h"
-
 1702834182 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\linkedlist.h
 
-1702834866 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\src\main.cpp
-	"wastemanager.h"
-	"strsafe.h"
-	"treestruct.h"
-	"linkedlist.h"
-
-1702839552 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\src\wastemanager.h
-	<tchar.h>
-	<windows.h>
-	<winuser.h>
-	<windowsx.h>
-	<commctrl.h>
-	<stdlib.h>
-	<stdio.h>
-	<sysinfoapi.h>
-
-1701374998 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\src\treestruct.h
-
-1702834182 e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\src\linkedlist.h
-
-1702839508 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\src\menu.rc
+1703366267 source:e:\users\bftc\desktop\importants!\arquivos\meus conteúdos faculdade\unip - análise & dev. de sistemas\projeto integrado multidisciplinar iv\desenvolvimento do pim - wenderson f\código-fonte do software\wmanagersystem\menu.rc
 	"wastemanager.h"
 

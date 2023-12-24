@@ -3,55 +3,30 @@
 #include "treestruct.h"
 #include "linkedlist.h"
 
-/*
-    Salvar relatórios MTR, CDF e FDSR com o seguinte padrão:
-
-    [TIPORELATÓRIO]_[IDEMPRESA]_[NUMERO ANO E MÊS] [NUMERO HORA E MINUTO].w
-    Ex.: MTR_1_2023111810.w
-    Ex.: CDF_2_2023121710.w
-
-    O número no relatório nunca será o mesmo, portanto será único!
-    Cada empresa poderá ter vários relatórios.
-
-    O próximo procedimento é ler cada relatório do diretório e identificar o
-    seu número (Ano, Mês, Hora e Minuto). Separar-los em cada variável e
-    organizar no formato MM/YYYY HH:MM. Carregar estas variáveis na estrutura
-    "Industry" em dateScheduled e timeScheduled.
-
-    Obter o número completo do relatório sem formato e deste número, armazenar
-    em uma variável inteira. Usar este número para salvar um novo nó da árvore.
-    Desta forma, na exibição LNR, o sistema considerará a ordenação simétrica
-    pela data e horário da geração do relatório para a caixa de listagem 7.
-
-    O sistema deve perguntar se o usuário deseja salvar uma cópia do relatório com
-    outro nome, se o usuário aceitar, então abrir o janela de diretórios para
-    escrever o nome do relatório. Assim teremos um relatório seguindo o formato
-    padrão para ser aberto no software e uma cópia pro usuário abrir em qualquer lugar.
-    A cópia também poderá criar com a extensão .W, podendo assim ser aberta pelo software,
-    no entanto, se o usuário optar por escolher a opção .TXT, o relatório não mais poderá
-    ser aberto no software até que converta sua extensão para .W
-
-    Durante as administrações de tratamento na tela de sessão, o software deve seguir a mesma
-    etapa para formatação do nome de relatório, lendo a data e horário da geração dos mesmos
-    e exibição em formato padrão na caixa de listagem.
-
-    Para Relatórios MTR e CDF:
-
-    * Criar um vetor de índices de Industry
-    * Cada índice desse vetor será um índice de um item MTR ou CDF
-    * No conteúdo de cada índice terá o índice da Industry
-    * No conteúdo da Industry recuperada terá um ponteiro para lista
-    * Em cada nó dessa lista terão valores de data/hora para recuperação de relatório
-    * Em cada nó dessa lista terá o ID, sendo o índice do item MTR ou CDF
-*/
-
 typedef struct
 {
     CHAR personName[100];
+    CHAR emailAddr[100];
+    CHAR dataPhone1[20];
+    CHAR dataPhone2[20];
+    CHAR homeAddress[100];
     CHAR companyName[100];
-    CHAR timeScheduled[20];
-    CHAR dateScheduled[20];
+    CHAR fantasyName[100];
+    CHAR companyAddr[100];
     CHAR dataCNPJ[50];
+    CHAR openDate[12];
+    CHAR ativity[100];
+    CHAR actionCompany[100];
+    CHAR classWaste[20];
+    CHAR wAverageCount[50];
+    CHAR classDanger[50];
+    CHAR descriptions[100];
+    CHAR dateScheduled[20];
+    CHAR timeScheduled[20];
+    CHAR truckModel[50];
+    CHAR weightLimit[20];
+    CHAR travelTime[20];
+    CHAR truckQuant[20];
 } Industry;
 
 typedef struct
@@ -72,6 +47,7 @@ int IndStatus[20];
 Tree *dat;
 Node *reports;
 bool updatedata = false;
+bool costumer_update = false;
 int lastindex = 0;
 int companyid = 0;
 int reportid = 0;
@@ -174,25 +150,156 @@ bool GetFileStatus(char archive[], char data[]){
     return arch != NULL;
 }
 
+void LoadFileArgv(LPSTR FileName){
+	HANDLE create;
+	create = CreateFile(FileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, 0);
+	DWORD FileSize = GetFileSize(create, NULL);
+	LPSTR FileText = (LPSTR) GlobalAlloc(GPTR, FileSize + 1);
+	DWORD read;
+	if(ReadFile(create, FileText, FileSize, &read, NULL)){
+		FileText[FileSize] = 0;
+		MessageBox(SessionScrn, FileText, "Apresentação de Relatório", MB_OK);
+	}
+	CloseHandle(create);
+}
+
+BOOL SaveFile(LPSTR FileName)//, LPSTR DataFile)
+{
+
+    FILE *save = fopen(FileName, "w");
+    fputs(data, save);
+    fclose(save);
+
+    return TRUE;
+/*
+   HANDLE Save = CreateFile(FileName, GENERIC_WRITE, 0, 0, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0);
+
+   if(Save != INVALID_HANDLE_VALUE)
+   {
+      DWORD TextLength = strlen(data) + 1;
+      DWORD Writen;
+
+      if(TextLength > 0)// No need to bother if there's no text.
+      {
+
+         LPSTR Text = (LPSTR)GlobalAlloc(GPTR, TextLength + 1);
+         if(Text != NULL)
+         {
+            StringCchCat(Text, TextLength, data);
+            //WriteFile(Save, Text, TextLength, &Writen, NULL);
+            GlobalFree(Text);
+
+         }else{
+			 return FALSE;
+		 }
+      }else{
+		  return FALSE;
+	  }
+      CloseHandle(Save);
+   }else{
+	   return FALSE;
+   }
+   return TRUE;
+   */
+
+}
+
+BOOL LoadFile(LPSTR FileName){
+	HANDLE create;
+
+	create = CreateFile(FileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, 0);
+	if(create != INVALID_HANDLE_VALUE){
+		DWORD FileSize = GetFileSize(create, NULL);
+		if(FileSize != 0xFFFFFFFF){
+			LPSTR FileText = (LPSTR) GlobalAlloc(GPTR, FileSize + 1);
+			DWORD read;
+			if(ReadFile(create, FileText, FileSize, &read, NULL)){
+				FileText[FileSize] = 0;
+				MessageBox(SessionScrn, FileText, "Apresentação de Relatórios", MB_OK | MB_ICONINFORMATION);
+			}else{
+				return FALSE;
+			}
+
+			GlobalFree(FileText);
+		}else{
+			return FALSE;
+		}
+	}else{
+		return FALSE;
+	}
+	CloseHandle(create);
+	return TRUE;
+}
+
+BOOL OpenFile(bool action){ //LPSTR DataFile,
+	OPENFILENAME openFile;
+	char FileName[MAX_PATH];
+	ZeroMemory(&openFile, sizeof(openFile));
+	FileName[0] = 0;
+
+	openFile.lStructSize = sizeof(openFile);
+	openFile.hwndOwner = SessionScrn;
+	openFile.lpstrFilter = "Arquivo de Relatórios (*.w)\0*.w\0\0";
+	openFile.lpstrFile = FileName;
+	openFile.nMaxFile = MAX_PATH;
+	openFile.lpstrDefExt = "w";
+
+	if(action){
+		openFile.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+        if(!GetOpenFileName(&openFile))
+            return FALSE;
+        if(!LoadFile(openFile.lpstrFile))
+            return FALSE;
+
+	}else{
+	    openFile.Flags = OFN_EXPLORER | OFN_HIDEREADONLY;
+	    if(!GetSaveFileName(&openFile))
+            return FALSE;
+
+        if(!SaveFile(openFile.lpstrFile))
+            return FALSE;
+	}
+
+	return TRUE;
+}
+
 void LoadClass(WNDCLASSEX classType, char *ClassName, char *MenuName, HINSTANCE instance, int system){
     switch(system){
         case 0: classType.lpfnWndProc = LoginManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_LOGIN));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_LOGIN));
                 break;
         case 1: classType.lpfnWndProc = SignManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_LOGIN));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_LOGIN));
                 break;
         case 2: classType.lpfnWndProc = CostumerManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_WASTE));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_WASTE));
                 break;
         case 3: classType.lpfnWndProc = WasteManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_WASTE));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_WASTE));
                 break;
         case 4: classType.lpfnWndProc = DataManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
                 break;
         case 5: classType.lpfnWndProc = SessionManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_WASTE));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_WASTE));
                 break;
         case 6: classType.lpfnWndProc = MTRManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
                 break;
         case 7: classType.lpfnWndProc = CDFManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
                 break;
         case 8: classType.lpfnWndProc = FDSRManager;
+                classType.hIcon    = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
+                classType.hIconSm  = LoadIcon(instance, MAKEINTRESOURCE(IDI_REPORT));
                 break;
     }
 
@@ -200,8 +307,7 @@ void LoadClass(WNDCLASSEX classType, char *ClassName, char *MenuName, HINSTANCE 
     classType.lpszMenuName   = MenuName;
     classType.hInstance      = instance;
     classType.style    = CS_DBLCLKS;
-    classType.hIcon    = LoadIcon (NULL, IDI_APPLICATION);
-    classType.hIconSm  = LoadIcon (NULL, IDI_APPLICATION);
+
     classType.hCursor  = LoadCursor (NULL, IDC_ARROW);
     classType.cbSize   = sizeof (WNDCLASSEX);
     classType.hbrBackground  = (HBRUSH) COLOR_WINDOW+3;
@@ -210,26 +316,32 @@ void LoadClass(WNDCLASSEX classType, char *ClassName, char *MenuName, HINSTANCE 
     RegisterClassEx (&classType);
 }
 
-int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nCmdShow)
+int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR argv, int nCmdShow)
 {
     MSG messages;
-    instance1 = hThisInstance;
-    //instance2 = hPrevInstance;
+
+    if(argv != NULL){
+       if(argv[strlen(argv)-2] == '.' && argv[strlen(argv)-1] == 'w'){
+            LoadFileArgv(argv);
+            return messages.wParam;
+       }
+    }
+
 
     EnableVisualStyles();
 
     hFont = CreateFont(24, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS,
                                      CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Times New Roman");
 
-    LoadClass(loginClass, classNameLogin, NULL, instance1, 0);
-    LoadClass(signClass, classNameSign, NULL, instance2, 1);
-    LoadClass(costumerClass, classNameCost, NULL, instance3, 2);
-    LoadClass(wasteClass, classNameWaste, NULL, instance4, 3);
-    LoadClass(managerClass, classNameMngr, NULL, instance5, 4);
-    LoadClass(sessionClass, classNameSess, classNameMenu, instance6, 5);
-    LoadClass(MTRClass, classNameMTR, NULL, instance7, 6);
-    LoadClass(CDFClass, classNameCDF, NULL, instance8, 7);
-    LoadClass(FDSRClass, classNameFDSR, NULL, instance9, 8);
+    LoadClass(loginClass, classNameLogin, NULL, hThisInstance, 0);
+    LoadClass(signClass, classNameSign, NULL, hThisInstance, 1);
+    LoadClass(costumerClass, classNameCost, NULL, hThisInstance, 2);
+    LoadClass(wasteClass, classNameWaste, NULL, hThisInstance, 3);
+    LoadClass(managerClass, classNameMngr, NULL, hThisInstance, 4);
+    LoadClass(sessionClass, classNameSess, classNameMenu, hThisInstance, 5);
+    LoadClass(MTRClass, classNameMTR, NULL, hThisInstance, 6);
+    LoadClass(CDFClass, classNameCDF, NULL, hThisInstance, 7);
+    LoadClass(FDSRClass, classNameFDSR, NULL, hThisInstance, 8);
 
     LoginScrn = CreateWindowEx (WS_EX_CLIENTEDGE, classNameLogin, loginTitle, WS_OVERLAPPEDWINDOW | WS_BORDER, CW_USEDEFAULT, CW_USEDEFAULT, LOGINW_X, LOGINW_Y,
            HWND_DESKTOP, NULL, instance1, NULL);
@@ -315,11 +427,12 @@ LRESULT CALLBACK LoginManager (HWND app, UINT message, WPARAM action1, LPARAM ac
                     int size_user = GetWindowTextLength(lEdit1);
                     int size_pass = GetWindowTextLength(lEdit2);
                     if(!size_user){
-                        MessageBox(LoginScrn, "O 1ª campo de 'usuário' não foi preenchido!", "", MB_OKCANCEL);
+                        MessageBox(LoginScrn, "O 1ª campo de 'usuário' não foi preenchido!", "Erro de Login", MB_OK | MB_ICONERROR);
                         break;
                     }else{
                         if(!size_pass){
-                            MessageBox(LoginScrn, "O 2ª campo de 'senha' não foi preenchido!", "", MB_OKCANCEL);
+                            MessageBox(LoginScrn, "O 2ª campo de 'senha' não foi preenchido!", "Erro de Login", MB_OK | MB_ICONERROR);
+
                             break;
                         }
                     }
@@ -393,13 +506,13 @@ LRESULT CALLBACK LoginManager (HWND app, UINT message, WPARAM action1, LPARAM ac
                         }
 
                     }else{
-                        MessageBox(LoginScrn, "Não há cadastro de funcionários!", "Error", MB_OKCANCEL);
+                        MessageBox(LoginScrn, "Não há cadastro de funcionários!", "Erro de Login", MB_OK | MB_ICONERROR);
                         break;
                     }
 
                     if(userfound){
                         if(!passfound){
-                            MessageBox(LoginScrn, "A senha está incorreta!", "Error", MB_OKCANCEL);
+                            MessageBox(LoginScrn, "A senha está incorreta!", "Erro de Login", MB_OK | MB_ICONERROR);
                         }else{
                             SessionScrn = CreateWindowEx (0, classNameSess, sessionTitle, WS_OVERLAPPEDWINDOW | WS_BORDER | WS_VSCROLL | WS_HSCROLL, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
                             HWND_DESKTOP, NULL, instance6, NULL);
@@ -413,7 +526,7 @@ LRESULT CALLBACK LoginManager (HWND app, UINT message, WPARAM action1, LPARAM ac
                             break;
                         }
                     }else{
-                        MessageBox(LoginScrn, "Usuário não encontrado!", "Error", MB_OKCANCEL);
+                        MessageBox(LoginScrn, "Usuário não encontrado!", "Erro de Login", MB_OK | MB_ICONERROR);
                     }
 
                     free(get_text_user);
@@ -427,7 +540,7 @@ LRESULT CALLBACK LoginManager (HWND app, UINT message, WPARAM action1, LPARAM ac
             PostQuitMessage (0);
             break;
         case WM_CLOSE:
-            if (MessageBox(LoginScrn, "Deseja realmente sair?", "Login Exit", MB_OKCANCEL) == IDOK)
+            if (MessageBox(LoginScrn, "Deseja realmente sair?", "Confirmação de Saída", MB_OKCANCEL | MB_ICONQUESTION) == IDOK)
             {
                 DestroyWindow(LoginScrn);
                 statelogin = false;
@@ -501,20 +614,20 @@ LRESULT CALLBACK SignManager (HWND app, UINT message, WPARAM action1, LPARAM act
                     int size_new_pass = GetWindowTextLength(sEdit3);
                     int size_pass_confirm = GetWindowTextLength(sEdit4);
                     if(!size_new_user){
-                        MessageBox(SignScrn, "O 1ª campo de 'usuário' não foi preenchido!", "", MB_OKCANCEL);
+                        MessageBox(SignScrn, "O 1ª campo de 'usuário' não foi preenchido!", "Erro de Cadastro", MB_OK | MB_ICONERROR);
                         break;
                     }else
                         if(!size_email){
-                            MessageBox(SignScrn, "O 2ª campo de 'email' não foi preenchido!", "", MB_OKCANCEL);
+                            MessageBox(SignScrn, "O 2ª campo de 'email' não foi preenchido!", "Erro de Cadastro", MB_OK | MB_ICONERROR);
                             break;
                         }else if(!size_new_pass){
-                            MessageBox(SignScrn, "O 3ª campo de 'senha' não foi preenchido!", "", MB_OKCANCEL);
+                            MessageBox(SignScrn, "O 3ª campo de 'senha' não foi preenchido!", "Erro de Cadastro", MB_OK | MB_ICONERROR);
                             break;
                         }else if(!size_pass_confirm){
-                            MessageBox(SignScrn, "O 4ª campo de 'confirmação' não foi preenchido!", "", MB_OKCANCEL);
+                            MessageBox(SignScrn, "O 4ª campo de 'confirmação' não foi preenchido!", "Erro de Cadastro", MB_OK | MB_ICONERROR);
                             break;
                         }else if(!radiopressed){
-                            MessageBox(SignScrn, "Nenhuma ocupação foi selecionada!", "", MB_OKCANCEL);
+                            MessageBox(SignScrn, "Nenhuma ocupação foi selecionada!", "Erro de Cadastro", MB_OK | MB_ICONERROR);
                             break;
                         }
 
@@ -528,7 +641,7 @@ LRESULT CALLBACK SignManager (HWND app, UINT message, WPARAM action1, LPARAM act
                     GetWindowText(sEdit4, get_pass_confirm, size_pass_confirm+1);
 
                     if(strcmp(get_new_pass, get_pass_confirm)){
-                        MessageBox(SignScrn, "As senhas não se conferem!", "", MB_OKCANCEL);
+                        MessageBox(SignScrn, "As senhas não se conferem!", "Erro de Cadastro", MB_OK | MB_ICONERROR);
                         free(get_new_user);
                         free(get_email);
                         free(get_new_pass);
@@ -584,7 +697,7 @@ LRESULT CALLBACK SignManager (HWND app, UINT message, WPARAM action1, LPARAM act
                     StringCchCat(concat, size_data, radiotext);
                     StringCchCat(concat, size_data, "\n");
 
-                    if(MessageBox(SignScrn, concat, "Confirme seus dados", MB_OKCANCEL) == IDOK){
+                    if(MessageBox(SignScrn, concat, "Confirme seus dados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
 
                         FILE *filew = fopen(FILE_SIGN, "a");
                         fputs(concat, filew);
@@ -597,7 +710,7 @@ LRESULT CALLBACK SignManager (HWND app, UINT message, WPARAM action1, LPARAM act
                         fputs(num_id, fileidw);
                         fclose(fileidw);
 
-                        MessageBox(SignScrn, "Dados cadastrados com sucesso!", "", MB_OKCANCEL);
+                        MessageBox(SignScrn, "Dados cadastrados com sucesso!", "Informação de Cadastro", MB_OK | MB_ICONINFORMATION);
 
                         free(get_new_user);
                         free(get_email);
@@ -723,6 +836,10 @@ LRESULT CALLBACK CostumerManager (HWND app, UINT message, WPARAM action1, LPARAM
 			app, (HMENU) TRUCK_COUNTS, NULL, NULL);
 			CreateWindow(TEXT("STATIC"), TEXT("caminhões"), WS_VISIBLE | WS_CHILD, 567, 429, 70, 20, app, (HMENU) NULL, NULL, NULL);
 
+			if(costumer_update)
+                cEdit[22] = CreateWindow(TEXT("BUTTON"), TEXT("Cliente"), WS_VISIBLE | WS_CHILD | WS_BORDER | BS_SPLITBUTTON, 365, 472, 125, 30,
+                app, (HMENU) COSTUMER_UPD, (HINSTANCE) action2, NULL);
+
 			for(int i = 0; i < 22; i++){
                 if(i != 16) SendMessage(cEdit[i], WM_SETFONT, (WPARAM)hFont, TRUE);
                 SendMessage(cEdit[i], EM_SETCUEBANNER, false, (LPARAM)TEXT(cBanner_cEdit[i]));
@@ -732,7 +849,8 @@ LRESULT CALLBACK CostumerManager (HWND app, UINT message, WPARAM action1, LPARAM
 			app, (HMENU) COSTUMER_SAVE, NULL, NULL);
 
         break;
-        case WM_COMMAND:
+        case WM_COMMAND: {
+            int lastid = GetLastId(FILE_ID_COSTUMER);
             if(action1 == SELECT_MONTH){
                 GetMenuStringA(hSplitMenu7, SEG_OP, textdate, 20, NULL);
                 SetWindowText(cEdit[16], textdate);
@@ -743,105 +861,245 @@ LRESULT CALLBACK CostumerManager (HWND app, UINT message, WPARAM action1, LPARAM
                 SetWindowText(cEdit[16], textdate);
                 dateselected = true;
                 break;
+            }else if(action1 >= COSTUMER_LIST && action1 <= COSTUMER_LIST+lastid){
+                CHAR company[50];
+                GetMenuStringA(hSplitMenu8, action1, company, 50, NULL);
+                SetWindowText(cEdit[22], company);
+                compselected5 = true;
+                companyid = action1 - COSTUMER_LIST;
+                SetWindowText(cEdit[0], IndData[companyid].personName);
+                SetWindowText(cEdit[1], IndData[companyid].emailAddr);
+                SetWindowText(cEdit[2], IndData[companyid].dataPhone1);
+                SetWindowText(cEdit[3], IndData[companyid].dataPhone2);
+                SetWindowText(cEdit[4], IndData[companyid].homeAddress);
+                SetWindowText(cEdit[5], IndData[companyid].companyName);
+                SetWindowText(cEdit[6], IndData[companyid].fantasyName);
+                SetWindowText(cEdit[7], IndData[companyid].companyAddr);
+                SetWindowText(cEdit[8], IndData[companyid].dataCNPJ);
+                SetWindowText(cEdit[9], IndData[companyid].openDate);
+                SetWindowText(cEdit[10], IndData[companyid].ativity);
+                SetWindowText(cEdit[11], IndData[companyid].actionCompany);
+                SetWindowText(cEdit[12], IndData[companyid].classWaste);
+                SetWindowText(cEdit[13], IndData[companyid].wAverageCount);
+                SetWindowText(cEdit[14], IndData[companyid].classDanger);
+                SetWindowText(cEdit[15], IndData[companyid].descriptions);
+                SetWindowText(cEdit[16], IndData[companyid].dateScheduled);
+                SetWindowText(cEdit[17], IndData[companyid].timeScheduled);
+                SetWindowText(cEdit[18], IndData[companyid].truckModel);
+                SetWindowText(cEdit[19], IndData[companyid].weightLimit);
+                SetWindowText(cEdit[20], IndData[companyid].travelTime);
+                SetWindowText(cEdit[21], IndData[companyid].truckQuant);
             }
+
             switch(action1){
                 case COSTUMER_SAVE: {
 
-                    isupdate = true;
-                    int costumer_data_size[22];
-                    int total_size;
-                    CHAR *get_costumer_data[22];
-                    CHAR *concat = (CHAR*) malloc(500 * sizeof(CHAR));
-                    concat[0] = {0};
-                    CHAR concat1[50] = {0};
-                    int current_index = 0;
-                    bool errordata = false;
+                    if(!costumer_update){
+                        isupdate = true;
+                        int costumer_data_size[22];
+                        int total_size;
+                        CHAR *get_costumer_data[22];
+                        CHAR *concat = (CHAR*) malloc(500 * sizeof(CHAR));
+                        concat[0] = {0};
+                        CHAR concat1[50] = {0};
+                        int current_index = 0;
+                        bool errordata = false;
 
 
-                    for(int i = 0; i < 22; i++){
-                        costumer_data_size[i] = GetWindowTextLength(cEdit[i]);
+                        for(int i = 0; i < 22; i++){
+                            costumer_data_size[i] = GetWindowTextLength(cEdit[i]);
 
-                        if(!costumer_data_size[i]){
-                            StringCchCat(concat1, 50, "O campo '");
-                            StringCchCat(concat1, 50, cBanner_cEdit1[i]);
-                            StringCchCat(concat1, 50, "' ");
-                            StringCchCat(concat1, 50, " está vazio!");
-                            MessageBox(CostumerScrn, concat1, "Erro de cadastro", MB_OKCANCEL);
-                            errordata = true;
-                            current_index = i;
+                            if(!costumer_data_size[i]){
+                                StringCchCat(concat1, 50, "O campo '");
+                                StringCchCat(concat1, 50, cBanner_cEdit1[i]);
+                                StringCchCat(concat1, 50, "' ");
+                                StringCchCat(concat1, 50, " está vazio!");
+                                MessageBox(CostumerScrn, concat1, "Erro de cadastro", MB_OK | MB_ICONERROR);
+                                errordata = true;
+                                current_index = i;
+                                break;
+                            }
+                            if(!dateselected){
+                                MessageBox(CostumerScrn, "O campo de semana não foi selecionado!", "Erro de cadastro", MB_OK | MB_ICONERROR);
+                                errordata = true;
+                                current_index = i;
+                                break;
+                            }
+
+                                get_costumer_data[i] = (CHAR*) malloc(costumer_data_size[i] * sizeof(CHAR));
+                                GetWindowText(cEdit[i], get_costumer_data[i], costumer_data_size[i]+1);
+                                total_size += costumer_data_size[i];
+                        }
+
+                        if(errordata){
+                            for(int j = 0; j < current_index; j++)
+                                free(get_costumer_data[j]);
+
+                            free(concat);
                             break;
                         }
-                        if(!dateselected){
-                            MessageBox(CostumerScrn, "O campo de semana não foi selecionado!", "Erro de cadastro", MB_OKCANCEL);
-                            errordata = true;
-                            current_index = i;
-                            break;
-                        }
+                        concat = (CHAR*) realloc(concat, total_size);
 
-                            get_costumer_data[i] = (CHAR*) malloc(costumer_data_size[i] * sizeof(CHAR));
-                            GetWindowText(cEdit[i], get_costumer_data[i], costumer_data_size[i]+1);
-                            total_size += costumer_data_size[i];
-                    }
+                        char num_id[10];
+                        FILE *fileid = fopen(FILE_ID_COSTUMER, "r");
+                        fgets(num_id, sizeof(num_id), fileid);
+                        fclose(fileid);
 
-                    if(errordata){
-                        for(int j = 0; j < current_index; j++)
-                            free(get_costumer_data[j]);
-
-                        free(concat);
-                        break;
-                    }
-                    concat = (CHAR*) realloc(concat, total_size);
-
-                    char num_id[10];
-                    FILE *fileid = fopen(FILE_ID_COSTUMER, "r");
-                    fgets(num_id, sizeof(num_id), fileid);
-                    fclose(fileid);
-
-                    StringCchCat(concat, total_size, byteb);
-                    StringCchCat(concat, total_size, "ID: ");
-                    StringCchCat(concat, total_size, num_id);
-                    StringCchCat(concat, total_size, "\n");
-
-                    for(int i = 0; i < 22; i++){
                         StringCchCat(concat, total_size, byteb);
-                        StringCchCat(concat, total_size, cBanner_cEdit1[i]);
-                        StringCchCat(concat, total_size, " : ");
-                        StringCchCat(concat, total_size, get_costumer_data[i]);
+                        StringCchCat(concat, total_size, "ID: ");
+                        StringCchCat(concat, total_size, num_id);
                         StringCchCat(concat, total_size, "\n");
-                    }
 
-                    if(MessageBox(CostumerScrn, concat, "Confirmação de dados", MB_OKCANCEL) == IDOK){
+                        for(int i = 0; i < 22; i++){
+                            StringCchCat(concat, total_size, byteb);
+                            StringCchCat(concat, total_size, cBanner_cEdit1[i]);
+                            StringCchCat(concat, total_size, " : ");
+                            StringCchCat(concat, total_size, get_costumer_data[i]);
+                            StringCchCat(concat, total_size, "\n");
+                        }
 
-                        FILE *filew = fopen(FILE_COSTUMER, "a");
-                        fputs(concat, filew);
-                        fclose(filew);
+                        if(MessageBox(CostumerScrn, concat, "Confirmação de dados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
 
-                        int id = atoi(num_id) + 1;
-                        itoa(id, num_id, 10);
+                            FILE *filew = fopen(FILE_COSTUMER, "a");
+                            fputs(concat, filew);
+                            fclose(filew);
 
-                        FILE *fileidw = fopen(FILE_ID_COSTUMER, "w");
-                        fputs(num_id, fileidw);
-                        fclose(fileidw);
+                            int id = atoi(num_id) + 1;
+                            itoa(id, num_id, 10);
 
-                        CHAR sysconfirm[50] = {0};
-                        StringCchCat(sysconfirm, 50, FILE_STAT_COMPANY);
-                        StringCchCat(sysconfirm, 50, num_id);
-                        StringCchCat(sysconfirm, 50, EXTENSION);
+                            FILE *fileidw = fopen(FILE_ID_COSTUMER, "w");
+                            fputs(num_id, fileidw);
+                            fclose(fileidw);
 
-                        FILE *filesys = fopen(sysconfirm, "w");
-                        fputs("0", filesys);
-                        fclose(filesys);
+                            CHAR sysconfirm[50] = {0};
+                            StringCchCat(sysconfirm, 50, FILE_STAT_COMPANY);
+                            StringCchCat(sysconfirm, 50, num_id);
+                            StringCchCat(sysconfirm, 50, EXTENSION);
+
+                            FILE *filesys = fopen(sysconfirm, "w");
+                            fputs("0", filesys);
+                            fclose(filesys);
 
 
-                        MessageBox(CostumerScrn, "Cadastro de clientes realizado com sucesso!", "Sucesso", MB_OKCANCEL);
-                        for(int j = 0; j < 22; j++)
-                            free(get_costumer_data[j]);
-                    }
+                            MessageBox(CostumerScrn, "Cadastro de clientes realizado com sucesso!", "Informação de Cadastro", MB_OK | MB_ICONINFORMATION);
+                            for(int j = 0; j < 22; j++)
+                                free(get_costumer_data[j]);
+                        }
 
-                    break;
+                        break;
+                    }else{
+                            FILE *filecst;
+                            filecst = fopen(FILE_COSTUMER, "w");
+                            fputs("", filecst);
+                            fclose(filecst);
+                            char num_id[10] = {0};
+
+                            GetWindowText(cEdit[0], IndData[companyid].personName, GetWindowTextLength(cEdit[0])+1);
+                            GetWindowText(cEdit[1], IndData[companyid].emailAddr, GetWindowTextLength(cEdit[1])+1);
+                            GetWindowText(cEdit[2], IndData[companyid].dataPhone1, GetWindowTextLength(cEdit[2])+1);
+                            GetWindowText(cEdit[3], IndData[companyid].dataPhone2, GetWindowTextLength(cEdit[3])+1);
+                            GetWindowText(cEdit[4], IndData[companyid].homeAddress, GetWindowTextLength(cEdit[4])+1);
+                            GetWindowText(cEdit[5], IndData[companyid].companyName, GetWindowTextLength(cEdit[5])+1);
+                            GetWindowText(cEdit[6], IndData[companyid].fantasyName, GetWindowTextLength(cEdit[6])+1);
+                            GetWindowText(cEdit[7], IndData[companyid].companyAddr, GetWindowTextLength(cEdit[7])+1);
+                            GetWindowText(cEdit[8], IndData[companyid].dataCNPJ, GetWindowTextLength(cEdit[8])+1);
+                            GetWindowText(cEdit[9], IndData[companyid].openDate, GetWindowTextLength(cEdit[9])+1);
+                            GetWindowText(cEdit[10], IndData[companyid].ativity, GetWindowTextLength(cEdit[10])+1);
+                            GetWindowText(cEdit[11], IndData[companyid].actionCompany, GetWindowTextLength(cEdit[11])+1);
+                            GetWindowText(cEdit[12], IndData[companyid].classWaste, GetWindowTextLength(cEdit[12])+1);
+                            GetWindowText(cEdit[13], IndData[companyid].wAverageCount, GetWindowTextLength(cEdit[13])+1);
+                            GetWindowText(cEdit[14], IndData[companyid].classDanger, GetWindowTextLength(cEdit[14])+1);
+                            GetWindowText(cEdit[15], IndData[companyid].descriptions, GetWindowTextLength(cEdit[15])+1);
+                            GetWindowText(cEdit[16], IndData[companyid].dateScheduled, GetWindowTextLength(cEdit[16])+1);
+                            GetWindowText(cEdit[17], IndData[companyid].timeScheduled, GetWindowTextLength(cEdit[17])+1);
+                            GetWindowText(cEdit[18], IndData[companyid].truckModel, GetWindowTextLength(cEdit[18])+1);
+                            GetWindowText(cEdit[19], IndData[companyid].weightLimit, GetWindowTextLength(cEdit[19])+1);
+                            GetWindowText(cEdit[20], IndData[companyid].travelTime, GetWindowTextLength(cEdit[20])+1);
+                            GetWindowText(cEdit[21], IndData[companyid].truckQuant, GetWindowTextLength(cEdit[21])+1);
+
+                            filecst = fopen(FILE_COSTUMER, "a");
+
+                            int lastid = GetLastId(FILE_ID_COSTUMER) + 1;
+
+                            for(int i = 0; i < lastid; i++){
+
+                                int totalsize = sizeof(Industry) + 500;
+                                CHAR *structs = (CHAR*) malloc(totalsize);
+                                structs[0] = {0};
+
+                                itoa(i, num_id, 10);
+                                StringCchCat(structs, totalsize, byteb);
+                                StringCchCat(structs, totalsize, "ID: ");
+                                StringCchCat(structs, totalsize, num_id);
+                                StringCchCat(structs, totalsize, "\n");
+
+                                for(int j = 0; j < 22; j++){
+                                    StringCchCat(structs, totalsize, byteb);
+                                    StringCchCat(structs, totalsize, cBanner_cEdit1[j]);
+                                    StringCchCat(structs, totalsize, " : ");
+                                    switch(j){
+                                        case 0: StringCchCat(structs, totalsize, IndData[i].personName);
+                                                break;
+                                        case 1: StringCchCat(structs, totalsize, IndData[i].emailAddr);
+                                                break;
+                                        case 2: StringCchCat(structs, totalsize, IndData[i].dataPhone1);
+                                                break;
+                                        case 3: StringCchCat(structs, totalsize, IndData[i].dataPhone2);
+                                                break;
+                                        case 4: StringCchCat(structs, totalsize, IndData[i].homeAddress);
+                                                break;
+                                        case 5: StringCchCat(structs, totalsize, IndData[i].companyName);
+                                                break;
+                                        case 6: StringCchCat(structs, totalsize, IndData[i].fantasyName);
+                                                break;
+                                        case 7: StringCchCat(structs, totalsize, IndData[i].companyAddr);
+                                                break;
+                                        case 8: StringCchCat(structs, totalsize, IndData[i].dataCNPJ);
+                                                break;
+                                        case 9: StringCchCat(structs, totalsize, IndData[i].openDate);
+                                                 break;
+                                        case 10: StringCchCat(structs, totalsize, IndData[i].ativity);
+                                                 break;
+                                        case 11: StringCchCat(structs, totalsize, IndData[i].actionCompany);
+                                                 break;
+                                        case 12: StringCchCat(structs, totalsize, IndData[i].classWaste);
+                                                 break;
+                                        case 13: StringCchCat(structs, totalsize, IndData[i].wAverageCount);
+                                                 break;
+                                        case 14: StringCchCat(structs, totalsize, IndData[i].classDanger);
+                                                 break;
+                                        case 15: StringCchCat(structs, totalsize, IndData[i].descriptions);
+                                                 break;
+                                        case 16: StringCchCat(structs, totalsize, IndData[i].dateScheduled);
+                                                 break;
+                                        case 17: StringCchCat(structs, totalsize, IndData[i].timeScheduled);
+                                                 break;
+                                        case 18: StringCchCat(structs, totalsize, IndData[i].truckModel);
+                                                 break;
+                                        case 19: StringCchCat(structs, totalsize, IndData[i].weightLimit);
+                                                 break;
+                                        case 20: StringCchCat(structs, totalsize, IndData[i].travelTime);
+                                                 break;
+                                        case 21: StringCchCat(structs, totalsize, IndData[i].truckQuant);
+                                                 break;
+                                    }
+
+                                    StringCchCat(structs, totalsize, "\n");
+                                }
+
+                                fputs(structs, filecst);
+                                free(structs);
+
+                            }
+
+                            fclose(filecst);
+
+                            MessageBox(app, "Os dados foram atualizados com sucesso!", "Atualização de clientes", MB_OK | MB_ICONINFORMATION);
+                        }
                 }
             }
-        break;
+            break;
+        }
         case WM_NOTIFY:
             switch (((LPNMHDR)action2)->code) {
                 case BCN_DROPDOWN:
@@ -856,10 +1114,28 @@ LRESULT CALLBACK CostumerManager (HWND app, UINT message, WPARAM action1, LPARAM
 
                             RECT Rect;
                             GetWindowRect(cEdit[16], &Rect);
-
                             TrackPopupMenu(hSplitMenu7, TPM_LEFTALIGN | TPM_TOPALIGN, Rect.left, Rect.top+30, 0, app, NULL);
 
                             return TRUE;
+                        }else{
+                            if (pDropDown->hdr.hwndFrom == GetDlgItem(app, COSTUMER_UPD))
+                            {
+
+                                hSplitMenu8 = CreatePopupMenu();
+
+                                int lastid = GetLastId(FILE_ID_COSTUMER) + 1;
+                                if(lastid)
+                                    for(int i = 0; i < lastid; i++)
+                                        AppendMenu(hSplitMenu8, MF_BYPOSITION, COSTUMER_LIST+i, IndData[i].companyName);
+                                else{
+                                    MessageBox(ManagerScrn, "Por favor, cadastre um cliente!", "Aviso de cadastro", MB_OK | MB_ICONWARNING);
+                                    break;
+                                }
+
+                                RECT Rect;
+                                GetWindowRect(cEdit[22], &Rect);
+                                TrackPopupMenu(hSplitMenu8, TPM_LEFTALIGN | TPM_TOPALIGN, Rect.left, Rect.top+30, 0, app, NULL);
+                            }
                         }
                         break;
                     }
@@ -867,6 +1143,7 @@ LRESULT CALLBACK CostumerManager (HWND app, UINT message, WPARAM action1, LPARAM
         case WM_DESTROY:
             //parentstate = false;
             PostQuitMessage (0);
+            costumer_update = false;
             break;
         case WM_CLOSE:
             DestroyWindow(CostumerScrn);
@@ -954,13 +1231,13 @@ LRESULT CALLBACK WasteManager (HWND app, UINT message, WPARAM action1, LPARAM ac
                                 StringCchCat(concat, 50, cBanner_wEdit1[i]);
                                 StringCchCat(concat, 50, "' ");
                                 StringCchCat(concat, 50, " está vazio!");
-                                MessageBox(WasteScrn, concat1, "Erro de cadastro", MB_OKCANCEL);
+                                MessageBox(WasteScrn, concat1, "Erro de cadastro", MB_OK | MB_ICONERROR);
                                 errordata = true;
                                 current_index = i;
                                 break;
                             }
                             if(!compselected || !monthselected){
-                                MessageBox(WasteScrn, "Algum dos campos de seleção não foram marcados!", "Erro de cadastro", MB_OKCANCEL);
+                                MessageBox(WasteScrn, "Algum dos campos de seleção não foram marcados!", "Erro de cadastro", MB_OK | MB_ICONERROR);
                                 errordata = true;
                                 current_index = i;
                                 break;
@@ -1010,7 +1287,7 @@ LRESULT CALLBACK WasteManager (HWND app, UINT message, WPARAM action1, LPARAM ac
                             StringCchCat(concat, total_size, "\n");
                         }
 
-                        if(MessageBox(WasteScrn, concat, "Confirmação de dados", MB_OKCANCEL) == IDOK){
+                        if(MessageBox(WasteScrn, concat, "Confirmação de dados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
 
                             FILE *filew = fopen(FILE_WASTE, "a");
                             fputs(concat, filew);
@@ -1023,7 +1300,7 @@ LRESULT CALLBACK WasteManager (HWND app, UINT message, WPARAM action1, LPARAM ac
                             fputs(num_id, fileidw);
                             fclose(fileidw);
 
-                            MessageBox(WasteScrn, "Cadastro de resíduos efetuados!", "Sucesso", MB_OKCANCEL);
+                            MessageBox(WasteScrn, "Cadastro de resíduos efetuados!", "Informação de Cadastro", MB_OK | MB_ICONINFORMATION);
                             for(int j = 0; j < 6; j++)
                                 free(get_waste_data[j]);
 
@@ -1085,7 +1362,7 @@ LRESULT CALLBACK WasteManager (HWND app, UINT message, WPARAM action1, LPARAM ac
                                         countline = (countline == 22) ? 0 : countline + 1;
                                     }
                                 }else{
-                                    MessageBox(FDSRScrn, "Por favor, cadastre um cliente!", "Error", MB_OKCANCEL);
+                                    MessageBox(FDSRScrn, "Por favor, cadastre um cliente!", "Aviso de Cadastro", MB_OK | MB_ICONWARNING);
                                     break;
                                 }
 
@@ -1178,24 +1455,26 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                 GetMenuStringA(hSplitMenu3, action1, companyname2, 30, NULL);
                 SetWindowText(mspltBtn1, companyname2);
                 compselected2 = true;
-                if(updatedata){
-                    int lastid = GetLastId(FILE_ID_MANAGER) + 1;
-                    for(int i = 0; i < lastid; i++){
-                        printf("STRUCT: %s\nSELECTED: %s\n", manager[i].companyName, companyname2);
-                        if(!strcmp(companyname2, manager[i].companyName)){
-                            SetWindowText(mEdit[0], manager[i].financial);
-                            SetWindowText(mEdit[1], manager[i].createdWaste);
-                            SetWindowText(mEdit[2], manager[i].isDanger);
-                            SetWindowText(mEdit[3], manager[i].ammountCreated);
-                            SetWindowText(mEdit[4], manager[i].destScheduled);
-                            SetWindowText(mEdit[5], manager[i].treatedScheduled);
-                            lastindex = i;
-                            break;
-                        }
-                    }
-                }
                 companyid = action1 - COSTUMER_LIST;
                 printf("ID COMPANY: %d\n", companyid);
+                if(updatedata){
+                    //int lastid = GetLastId(FILE_ID_MANAGER) + 1;
+                    //for(int i = 0; i < lastid; i++){
+                    //    printf("STRUCT: %s\nSELECTED: %s\n", manager[i].companyName, companyname2);
+                    //    if(!strcmp(companyname2, manager[i].companyName)){
+                            lastindex = companyid;
+                            SetWindowText(mEdit[0], manager[lastindex].financial);
+                            SetWindowText(mEdit[1], manager[lastindex].createdWaste);
+                            SetWindowText(mEdit[2], manager[lastindex].isDanger);
+                            SetWindowText(mEdit[3], manager[lastindex].ammountCreated);
+                            SetWindowText(mEdit[4], manager[lastindex].destScheduled);
+                            SetWindowText(mEdit[5], manager[lastindex].treatedScheduled);
+
+                            break;
+                     //   }
+                   // }
+                }
+
             }
                 switch(action1){
 
@@ -1218,13 +1497,13 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                         StringCchCat(concat1, 50, cBanner_mEdit1[i]);
                                         StringCchCat(concat1, 50, "' ");
                                         StringCchCat(concat1, 50, " está vazio!");
-                                        MessageBox(ManagerScrn, concat1, "Erro de cadastro", MB_OKCANCEL);
+                                        MessageBox(ManagerScrn, concat1, "Erro de cadastro", MB_OK | MB_ICONERROR);
                                         current_index = i;
                                         errordata = true;
                                         break;
                                     }
                                     if(!compselected2 || !yesstate){
-                                        MessageBox(ManagerScrn, "Algum dos campos de seleção não foram marcados!", "Erro de cadastro", MB_OKCANCEL);
+                                        MessageBox(ManagerScrn, "Algum dos campos de seleção não foram marcados!", "Erro de cadastro", MB_OK | MB_ICONERROR);
                                         current_index = i;
                                         errordata = true;
                                         break;
@@ -1280,7 +1559,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                 }
                             }
 
-                            if(MessageBox(ManagerScrn, concat, "Confirmação de dados", MB_OKCANCEL) == IDOK){
+                            if(MessageBox(ManagerScrn, concat, "Confirmação de dados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
 
                                 FILE *filew = fopen(FILE_MANAGER, "a");
                                 fputs(concat, filew);
@@ -1293,7 +1572,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                 fputs(num_id, fileidw);
                                 fclose(fileidw);
 
-                                MessageBox(ManagerScrn, "Cadastro das informações realizadas!", "Sucesso", MB_OKCANCEL);
+                                MessageBox(ManagerScrn, "Cadastro das informações realizadas!", "Informação de Cadastro", MB_OK | MB_ICONINFORMATION);
                                 for(int j = 0; j < 6; j++)
                                     if(j != 2)
                                         free(get_manager_data[j]);
@@ -1394,7 +1673,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                         FILE *filedata = fopen(FILE_MANAGER, "r");
 
                         if(filedata == NULL){
-                            MessageBox(ManagerScrn, "Não há nenhuma informação cadastrada!", "Error", MB_OKCANCEL | MB_ICONERROR);
+                            MessageBox(ManagerScrn, "Não há nenhuma informação cadastrada!", "Erro de cadastro", MB_OK | MB_ICONERROR);
                         }else{
                             if(compselected2){
                                 if(!updatedata){
@@ -1442,7 +1721,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                     MessageBox(ManagerScrn, "A atualização de dados foi ativada!\n" \
                                                "Basta selecionar a empresa e os dados serão carregados.\n" \
                                                "Clique em registrar após as mudanças.\n" \
-                                               "Para desativar, clique novamente no botão 'Atualizar Dados'.", "Warning", MB_OK | MB_ICONWARNING);
+                                               "Para desativar, clique novamente no botão 'Atualizar Dados'.", "Aviso de atualização", MB_OK | MB_ICONWARNING);
 
 
                                     for(int i = 0; i < lastid; i++){
@@ -1461,7 +1740,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                     updatedata = true;
                                 }else{
                                     MessageBox(ManagerScrn, "A atualização de dados foi desativada!\n" \
-                                               "Para ativar, clique novamente no botão 'Atualizar Dados'.", "Warning", MB_OK | MB_ICONWARNING);
+                                               "Para ativar, clique novamente no botão 'Atualizar Dados'.", "Aviso de Atualização", MB_OK | MB_ICONWARNING);
                                     updatedata = false;
                                     free(manager);
                                 }
@@ -1469,7 +1748,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                 fclose(filedata);
 
                             }else{
-                                MessageBox(ManagerScrn, "Campo de empresa não selecionado!", "Error", MB_OK | MB_ICONERROR);
+                                MessageBox(ManagerScrn, "Campo de empresa não selecionado!", "Erro de Cadastro", MB_OK | MB_ICONERROR);
                             }
 
                         }
@@ -1477,21 +1756,24 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                     }
                     case MNG_BTN_REPORT: {
                         if(!GetWindowTextLength(mEdit[6])){
-                            MessageBox(app, "Preencha o relatório de inspeção!", "Error", MB_OK | MB_ICONERROR);
+                            MessageBox(app, "Preencha o relatório de inspeção!", "Erro de Relatório", MB_OK | MB_ICONERROR);
                         }else{
                             CHAR namefile[50] = {0};
                             CHAR num_id[10] = {0};
 
                             if(updatedata){
+                                if(!isReport){
+                                    itemIndex = companyid;
+                                    CHAR buff1[MAX_PATH];
+                                    StringCbPrintf (buff1, ARRAYSIZE(buff1), TEXT("%s | %s | Não há relatório"),
+                                                    IndData[itemIndex].companyName, IndData[itemIndex].timeScheduled);
+                                    itemPos = ListBox_FindString(hwndList6, -1, buff1);
+                                }
+
                                 int totalsize = sizeof(Manager) + GetWindowTextLength(mEdit[6]) + 500;
                                 CHAR *structs = (CHAR*) malloc(totalsize);
                                 structs[0] = {0};
 
-                                // Será que itemIndex assume o mesmo valor??
-                                // talvez alterar itemIndex quando isReport for false
-                                // sendo itemIndex = action1 = COSTUMER_LIST = id_company;
-                                if(!isReport)
-                                    itemIndex = companyid;
                                 itoa(itemIndex, num_id, 10);
                                 StringCchCat(namefile, 50, FILE_INSP_COMPANY);
                                 StringCchCat(namefile, 50, num_id);
@@ -1552,24 +1834,20 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                 fclose(filerep);
                                 free(structs);
 
-                                MessageBox(app, "Relatório gerado com sucesso!", "Geração de Relatório", MB_OK | MB_ICONINFORMATION);
-                            }else{
-                                MessageBox(app, "Clique no botão atualizar dados!", "Error", MB_OK | MB_ICONERROR);
-                            }
-
-                            if(isReport){
-
-                                CHAR buff[MAX_PATH];
-                                StringCbPrintf (buff, ARRAYSIZE(buff), TEXT("%s | %s | Visualizar relatório"),
-                                IndData[itemIndex].companyName, IndData[itemIndex].timeScheduled);
-
-                                ListBox_DeleteString(hwndList6, itemPos);
-                                ListBox_InsertString(hwndList6, itemPos, buff);
-                                ListBox_SetCurSel(hwndList6, itemPos);
-                                ListBox_SetItemData(hwndList6, itemPos, itemIndex);
+                                MessageBox(app, "Relatório gerado com sucesso!", "Informação de Relatório", MB_OK | MB_ICONINFORMATION);
 
                                 if(IndStatus[itemIndex]){
-                                   CHAR sysconfirm[50] = {0};
+                                    CHAR buff[MAX_PATH];
+
+                                    StringCbPrintf (buff, ARRAYSIZE(buff), TEXT("%s | %s | Visualizar relatório"),
+                                    IndData[itemIndex].companyName, IndData[itemIndex].timeScheduled);
+
+                                    ListBox_DeleteString(hwndList6, itemPos);
+                                    ListBox_InsertString(hwndList6, itemPos, buff);
+                                    ListBox_SetCurSel(hwndList6, itemPos);
+                                    ListBox_SetItemData(hwndList6, itemPos, itemIndex);
+
+                                    CHAR sysconfirm[50] = {0};
                                     CHAR num_stat[10] = {0};
                                     itoa(++IndStatus[itemIndex], num_stat, 10);
                                     StringCchCat(sysconfirm, 50, FILE_STAT_COMPANY);
@@ -1581,8 +1859,13 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                     fclose(filesys);
                                 }
 
-                                isReport = false;
+                            }else{
+                                MessageBox(app, "Clique no botão atualizar dados!", "Erro de relatório", MB_OK | MB_ICONERROR);
                             }
+
+
+
+                            isReport = false;
                         }
                         break;
                     }
@@ -1623,14 +1906,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                     while (fgets(buffer, sizeof(buffer), filer) != NULL) {
 
                                         if(countline == 6){
-                                            int i;
-                                            for(i = 0; buffer[i] != ':'; i++);
-                                            i += 2;
-                                            int j;
-                                            for(j = 0; buffer[i] != '\n'; i++, j++)
-                                                company[j] = buffer[i];
-
-                                            company[j] = 0;
+                                            GetDataField(company, buffer);
                                             AppendMenu(hSplitMenu3, MF_BYPOSITION, COSTUMER_LIST+index, company);
                                             index++;
                                         }
@@ -1638,7 +1914,7 @@ LRESULT CALLBACK DataManager (HWND app, UINT message, WPARAM action1, LPARAM act
                                         countline = (countline == 22) ? 0 : countline + 1;
                                     }
                                 }else{
-                                    MessageBox(ManagerScrn, "Por favor, cadastre um cliente!", "Error", MB_OKCANCEL);
+                                    MessageBox(ManagerScrn, "Por favor, cadastre um cliente!", "Aviso de cadastro", MB_OK | MB_ICONWARNING);
                                     break;
                                 }
 
@@ -1746,7 +2022,7 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                             readstat = atoi(stat);
                             IndStatus[index] = readstat;
                         }else{
-                            MessageBox(hwnd, "Erro: Arquivo de status de confirmação faltando!", "Error", MB_OK | MB_ICONERROR);
+                            MessageBox(hwnd, "Arquivo de status de confirmação faltando!", "Erro de Status", MB_OK | MB_ICONERROR);
                         }
                     }
 
@@ -1755,17 +2031,68 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                         case 1:
                             GetDataField(IndData[index].personName, buffer);
                         break;
+                        case 2:
+                            GetDataField(IndData[index].emailAddr, buffer);
+                        break;
+                        case 3:
+                            GetDataField(IndData[index].dataPhone1, buffer);
+                        break;
+                        case 4:
+                            GetDataField(IndData[index].dataPhone2, buffer);
+                        break;
+                        case 5:
+                            GetDataField(IndData[index].homeAddress, buffer);
+                        break;
                         case 6:
                             GetDataField(IndData[index].companyName, buffer);
                         break;
+                        case 7:
+                            GetDataField(IndData[index].fantasyName, buffer);
+                        break;
+                        case 8:
+                            GetDataField(IndData[index].companyAddr, buffer);
+                        break;
                         case 9:
                             GetDataField(IndData[index].dataCNPJ, buffer);
+                        break;
+                        case 10:
+                            GetDataField(IndData[index].openDate, buffer);
+                        break;
+                        case 11:
+                            GetDataField(IndData[index].ativity, buffer);
+                        break;
+                        case 12:
+                            GetDataField(IndData[index].actionCompany, buffer);
+                        break;
+                        case 13:
+                            GetDataField(IndData[index].classWaste, buffer);
+                        break;
+                        case 14:
+                            GetDataField(IndData[index].wAverageCount, buffer);
+                        break;
+                        case 15:
+                            GetDataField(IndData[index].classDanger, buffer);
+                        break;
+                        case 16:
+                            GetDataField(IndData[index].descriptions, buffer);
                         break;
                         case 17:
                             GetDataField(IndData[index].dateScheduled, buffer);
                         break;
                         case 18:
                             GetDataField(IndData[index].timeScheduled, buffer);
+                        break;
+                        case 19:
+                            GetDataField(IndData[index].truckModel, buffer);
+                        break;
+                        case 20:
+                            GetDataField(IndData[index].weightLimit, buffer);
+                        break;
+                        case 21:
+                            GetDataField(IndData[index].travelTime, buffer);
+                        break;
+                        case 22:
+                            GetDataField(IndData[index].truckQuant, buffer);
                         break;
                     }
 
@@ -1853,32 +2180,48 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
         }
         case WM_COMMAND:
 
-            if(LOWORD(wParam) >= IDC_LISTBOX1 && LOWORD(wParam) <= IDC_LISTBOX7){
+            if(LOWORD(wParam) >= IDC_LISTBOX1 && LOWORD(wParam) <= IDC_LISTBOX7 && (HIWORD(wParam) == LBN_DBLCLK)){
 
                 HWND hwndList = GetDlgItem(hwnd, LOWORD(wParam));
                 int lbItem = (int)SendMessage(hwndList, LB_GETCURSEL, 0, 0);
                 int i = (int)SendMessage(hwndList, LB_GETITEMDATA, lbItem, 0);
-                TCHAR buff[MAX_PATH];
                 int sizem = MAX_PATH;
-                CHAR *data = (CHAR*) malloc(sizem);
+                CHAR buff[MAX_PATH];
+                data = (CHAR*) malloc(sizem);
+                data[0] = {0};
                 isReport = false;
 
                 if(LOWORD(wParam) == IDC_LISTBOX7 && (HIWORD(wParam) == LBN_DBLCLK && i > -1)){
                     CHAR buffer[sizem];
-                    data[0] = {0};
 
-                    Node *item = search(reports, i);
-                    FILE *report = fopen(item->nameFile, "r");
 
-                    while (fgets(buffer, sizeof(buffer), report) != NULL) {
+                    Node *item = begin();
+                    item = search(reports, i);
+                    FILE *filerep;
+                    filerep = fopen(item->nameFile, "r");
+
+                    if(filerep != NULL)
+                        MessageBox(hwnd, item->nameFile, "teste 0", MB_YESNO | MB_ICONQUESTION);
+
+                    while (fgets(buffer, sizeof(buffer), filerep) != NULL) {
+                        MessageBox(hwnd, buffer, "teste", MB_YESNO | MB_ICONQUESTION);
                         StringCchCat(data, sizem, buffer);
                         sizem+=MAX_PATH;
                         data = (CHAR*) realloc(data, sizem);
                     }
 
+                    fclose(filerep);
+                   // MessageBox(hwnd, item->nameFile, "teste", MB_OK | MB_ICONINFORMATION);
+
                     StringCchCat(data, sizem, "\n\nDeseja gerar uma cópia desse relatório?");
-                    if(MessageBox(hwnd, data, "Cliente de Resíduos", MB_YESNO | MB_ICONWARNING) == IDYES)
-                        MessageBox(hwnd, "Fazer cópia de relatório!", "Cliente de Resíduos", MB_OK);
+                    if(MessageBox(hwnd, data, "Cópia de Relatórios", MB_YESNO | MB_ICONQUESTION) == IDYES){
+                        if(OpenFile(false))
+                            MessageBox(hwnd, "Arquivo copiado com sucesso!", "Copia de relatórios", MB_OK | MB_ICONINFORMATION);
+                        else
+                            MessageBox(hwnd, "Erro ao copiar o arquivo!", "Erro de cópia", MB_OK | MB_ICONERROR);
+                    }
+
+                    free(data);
 
                     break;
                 }
@@ -1916,13 +2259,15 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                         StringCbPrintf (buff, ARRAYSIZE(buff), TEXT("\nArmazenado em: %s \n\nDeseja confirmar o tratamento e gerar os relatórios MTR/CDF?"),
                                         IndData[i].dateScheduled);
                         StringCchCat(data, sizem, buff);
+
+                        fclose(report);
                         break;
                     }
                 }
 
 
                 if(HIWORD(wParam) == LBN_DBLCLK && i > -1){
-                    if(MessageBox(hwnd, data, "Cliente de Resíduos", MB_YESNO | MB_ICONWARNING) == IDYES){
+                    if(MessageBox(hwnd, data, "Confirmação de Relatório", MB_YESNO | MB_ICONQUESTION) == IDYES){
                         if(IndStatus[i] == 0){
                             CHAR sysconfirm[50] = {0};
                             CHAR num_id[10] = {0};
@@ -1953,7 +2298,7 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                             int pos = ListBox_AddString(hwndList6, buff);
                             ListBox_SetItemData(hwndList6, pos, i);
 
-                            if(MessageBox(hwnd, "Deseja gerar o relatório de inspeção?", "Cliente de Resíduos", MB_YESNO | MB_ICONWARNING) == IDYES){
+                            if(MessageBox(hwnd, "Deseja gerar o relatório de inspeção?", "Pergunta de Relatório", MB_YESNO | MB_ICONQUESTION) == IDYES){
                                 isReport = true;
                                 itemIndex = i;
                                 itemPos = pos;
@@ -2069,7 +2414,7 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                                 StringCchCat(namefile, sizeof(namefile), ".");
                                 StringCchCat(namefile, sizeof(namefile), "txt");
 
-                                if(MessageBox(SessionScrn, concat, "Relatório de insumos tratados", MB_OKCANCEL) == IDOK){
+                                if(MessageBox(SessionScrn, concat, "Relatório de insumos tratados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
                                     FILE *filew = fopen(namefile, "w");
                                     fputs(concat, filew);
                                     fclose(filew);
@@ -2093,7 +2438,7 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                             line = (line == 8) ? 0 : line + 1;
                         }
                     }else{
-                        MessageBox(SessionScrn, "Não há dados suficiente pra gerar este relatório!", "Erro de cadastro", MB_OKCANCEL);
+                        MessageBox(SessionScrn, "Não há dados suficiente pra gerar este relatório!", "Erro de relatório", MB_OK | MB_ICONERROR);
                         break;
                     }
 
@@ -2104,6 +2449,8 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                 case MENU_PRODUC:
                 break;
                 case OPEN:
+                    if(!OpenFile(true))
+                        MessageBox(hwnd, "Erro ao abrir o arquivo de relatório!", "Erro de abertura", MB_OK | MB_ICONERROR);
                 break;
                 case LOGGOFF:
                     DestroyWindow(SessionScrn);
@@ -2121,6 +2468,10 @@ LRESULT CALLBACK SessionManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM 
                     ShowWindow (SignScrn, SW_SHOWNORMAL);
                 break;
                 case MENU_COSTUMER_UPD:
+                    costumer_update = true;
+                    CostumerScrn = CreateWindowEx (WS_EX_CLIENTEDGE, classNameCost, costTitle, WS_OVERLAPPEDWINDOW | WS_BORDER, CW_USEDEFAULT, CW_USEDEFAULT, COSTW_X, COSTW_Y,
+                           SessionScrn, NULL, instance3, NULL);
+                    ShowWindow (CostumerScrn, SW_SHOWNORMAL);
                 break;
                 case MENU_WASTE_UPD:
                     WasteScrn = CreateWindowEx (WS_EX_CLIENTEDGE, classNameWaste, wasteTitle, WS_OVERLAPPEDWINDOW | WS_BORDER, CW_USEDEFAULT, CW_USEDEFAULT, WASTEW_X, WASTEW_Y,
@@ -2208,9 +2559,9 @@ LRESULT CALLBACK MTRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
                 case MTR_GENERATE: {
 
                     int mtr_data_size[12];
-                    int total_size;
+                    int total_size = 800;
                     CHAR *get_mtr_data[12];
-                    CHAR *concat = (CHAR*) malloc(500 * sizeof(CHAR));
+                    CHAR *concat = (CHAR*) malloc(total_size * sizeof(CHAR));
                     concat[0] = {0};
                     int current_index;
                     bool errordata = false;
@@ -2223,13 +2574,13 @@ LRESULT CALLBACK MTRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
                             StringCchCat(concat1, 100, cBanner_mtrEdit1[i]);
                             StringCchCat(concat1, 100, "' ");
                             StringCchCat(concat1, 100, " está vazio!");
-                            MessageBox(MTRScrn, concat1, "Erro de cadastro", MB_OKCANCEL);
+                            MessageBox(MTRScrn, concat1, "Erro de cadastro de relatório", MB_OK | MB_ICONERROR);
                             current_index = i;
                             errordata = true;
                             break;
                         }
                         if(!radiopressed2){
-                            MessageBox(MTRScrn, "Algum dos botões não foram marcados!", "Erro de cadastro", MB_OKCANCEL);
+                            MessageBox(MTRScrn, "Algum dos botões não foram marcados!", "Erro de cadastro de relatório", MB_OK | MB_ICONERROR);
                             current_index = i;
                             errordata = true;
                             break;
@@ -2277,10 +2628,10 @@ LRESULT CALLBACK MTRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
                     cnpjFound2 = cnpjFound;
                     if(!cnpjFound)
                         cnpjFound = MessageBox(MTRScrn, "Este CNPJ não consta na lista de clientes!\n" \
-                                               "Deseja gerar o relatório mesmo assim?", "Confirmação de CNPJ", MB_YESNO | MB_ICONWARNING) == IDYES;
+                                               "Deseja gerar o relatório mesmo assim?", "Confirmação de CNPJ", MB_YESNO | MB_ICONQUESTION) == IDYES;
 
                     if(cnpjFound){
-                        if(MessageBox(MTRScrn, concat, "Confirmação de dados", MB_OKCANCEL) == IDOK){
+                        if(MessageBox(MTRScrn, concat, "Confirmação de dados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
 
                             char typereport[5] = "MTR";
                             char namefile[50] = {0};
@@ -2392,7 +2743,7 @@ LRESULT CALLBACK MTRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
                             free(concat);
 
-                            MessageBox(MTRScrn, "Cadastro das informações realizadas!", "Sucesso", MB_OKCANCEL);
+                            MessageBox(MTRScrn, "Relatório MTR gerado com sucesso!", "Informação de relatório", MB_OK | MB_ICONINFORMATION);
                             DestroyWindow(MTRScrn);
                         }
                     }
@@ -2485,9 +2836,9 @@ LRESULT CALLBACK CDFManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
                 case CDF_GENERATE: {
 
                     int cdf_data_size[8];
-                    int total_size;
+                    int total_size = 800;
                     CHAR *get_cdf_data[8];
-                    CHAR *concat = (CHAR*) malloc(800 * sizeof(CHAR));
+                    CHAR *concat = (CHAR*) malloc(total_size * sizeof(CHAR));
                     concat[0] = {0};
                     int current_index = 0;
                     bool errordata = false;
@@ -2500,14 +2851,14 @@ LRESULT CALLBACK CDFManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
                                 StringCchCat(concat1, 50, cBanner_cdfEdit1[i]);
                                 StringCchCat(concat1, 50, "' ");
                                 StringCchCat(concat1, 50, " está vazio!");
-                                MessageBox(CDFScrn, concat1, "Erro de cadastro", MB_OKCANCEL);
+                                MessageBox(CDFScrn, concat1, "Erro de relatório", MB_OK | MB_ICONERROR);
                                 current_index = i;
                                 errordata = true;
                                 break;
                             }
 
                             if(!compselected3){
-                                MessageBox(CDFScrn, "Algum dos botões não foram marcados!", "Erro de cadastro", MB_OKCANCEL);
+                                MessageBox(CDFScrn, "Algum dos botões não foram marcados!", "Erro de cadastro de relatório", MB_OK | MB_ICONERROR);
                                 current_index = i;
                                 errordata = true;
                                 break;
@@ -2528,13 +2879,6 @@ LRESULT CALLBACK CDFManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
                     concat = (CHAR*) realloc(concat, total_size);
 
-                    /*
-                    char num_id[10];
-                    FILE *fileid = fopen(FILE_ID_REPORT, "r");
-                    fgets(num_id, sizeof(num_id), fileid);
-                    fclose(fileid);
-                    */
-
                     for(int i = 0; i < 8; i++){
                         StringCchCat(concat, total_size, byteb);
                         StringCchCat(concat, total_size, cBanner_cdfEdit1[i]);
@@ -2543,7 +2887,7 @@ LRESULT CALLBACK CDFManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
                         StringCchCat(concat, total_size, "\n");
                     }
 
-                    if(MessageBox(CDFScrn, concat, "Confirmação de dados", MB_OKCANCEL) == IDOK){
+                    if(MessageBox(CDFScrn, concat, "Confirmação de dados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
 
                         char typereport[5] = "CDF";
                         CHAR namefile[50] = {0};
@@ -2653,8 +2997,7 @@ LRESULT CALLBACK CDFManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
 
                         free(concat);
 
-                        MessageBox(CDFScrn, "Cadastro das informações realizadas!", "Sucesso", MB_OKCANCEL);
-
+                        MessageBox(CDFScrn, "Relatório CDF gerado com sucesso!", "Informação de relatório", MB_OK | MB_ICONINFORMATION);
                         DestroyWindow(CDFScrn);
                     }
 
@@ -2686,7 +3029,7 @@ LRESULT CALLBACK CDFManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPar
                                     line = (line == 22) ? 0 : line + 1;
                                 }
                             }else{
-                                MessageBox(CDFScrn, "Por favor, cadastre um cliente!", "Error", MB_OKCANCEL);
+                                MessageBox(CDFScrn, "Por favor, cadastre um cliente!", "Aviso de relatório", MB_OK | MB_ICONWARNING);
                                 break;
                             }
 
@@ -2768,14 +3111,14 @@ LRESULT CALLBACK FDSRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
             switch(wParam){
                 case FDSR_GENERATE: {
                     int fdsr_data_size[5];
-                    int total_size;
+                    int total_size = 800;
                     CHAR *get_fdsr_data[5];
-                    CHAR *concat = (CHAR*) malloc(2000 * sizeof(CHAR));
+                    CHAR *concat = (CHAR*) malloc(total_size * sizeof(CHAR));
                     concat[0] = {0};
                     int current_index;
                     bool errordata = false;
 
-                    for(int i = 1; i < 5; i++){
+                    for(int i = 0; i < 5; i++){
                             fdsr_data_size[i] = GetWindowTextLength(fdsrEdit[i]);
                             CHAR concat1[200] = {0};
                             if(!fdsr_data_size[i]){
@@ -2783,14 +3126,14 @@ LRESULT CALLBACK FDSRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
                                 StringCchCat(concat1, 200, cBanner_fdsrEdit1[i]);
                                 StringCchCat(concat1, 200, "' ");
                                 StringCchCat(concat1, 200, " está vazio!");
-                                MessageBox(FDSRScrn, concat1, "Erro de cadastro", MB_OKCANCEL);
+                                MessageBox(FDSRScrn, concat1, "Erro de cadastro de relatório", MB_OK | MB_ICONERROR);
                                 current_index = i;
                                 errordata = true;
                                 break;
                             }
 
                             if(!compselected4){
-                                MessageBox(FDSRScrn, "Algum dos botões não foram marcados!", "Erro de cadastro", MB_OKCANCEL);
+                                MessageBox(FDSRScrn, "Algum dos botões não foram marcados!", "Erro de cadastro de relatório", MB_OK | MB_ICONERROR);
                                 current_index = i;
                                 errordata = true;
                                 break;
@@ -2802,66 +3145,113 @@ LRESULT CALLBACK FDSRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
                     }
 
                     if(errordata){
-                        for(int j = 1; j < current_index; j++)
+                        for(int j = 0; j < current_index; j++)
                             free(get_fdsr_data[j]);
 
                         free(concat);
                         break;
                     }
 
-                    //concat = (CHAR*) realloc(concat, total_size);
+                    concat = (CHAR*) realloc(concat, total_size);
 
-
-                    char num_id[10];
-                    FILE *fileid = fopen(FILE_ID_FDSR, "r");
-                    fgets(num_id, sizeof(num_id), fileid);
-                    fclose(fileid);
-
-                    StringCchCat(concat, 2000, byteb);
-                    StringCchCat(concat, 2000, "ID: ");
-                    StringCchCat(concat, 2000, num_id);
-                    StringCchCat(concat, 2000, "\n");
-
-                    StringCchCat(concat, 2000, byteb);
-                    StringCchCat(concat, 2000, "Empresa geradora");
-                    StringCchCat(concat, 2000, " : ");
-                    StringCchCat(concat, 2000, companyname4);
-                    StringCchCat(concat, 2000, "\n");
-
-                    for(int i = 1; i < 5; i++){
-                        //strcat(concat, byteb);
-                        StringCchCat(concat, 2000, byteb);
-                        StringCchCat(concat, 2000, cBanner_fdsrEdit1[1]);
-                        StringCchCat(concat, 2000, " : ");
-                        StringCchCat(concat, 2000, get_fdsr_data[1]);
-                        StringCchCat(concat, 2000, "\n");
+                    for(int i = 0; i < 5; i++){
+                        StringCchCat(concat, total_size, byteb);
+                        StringCchCat(concat, total_size, cBanner_fdsrEdit1[i]);
+                        StringCchCat(concat, total_size, " : ");
+                        StringCchCat(concat, total_size, get_fdsr_data[i]);
+                        StringCchCat(concat, total_size, "\n");
                     }
 
 
-                    if(MessageBox(FDSRScrn, concat, "Confirmação de dados", MB_OKCANCEL) == IDOK){
+                    if(MessageBox(FDSRScrn, concat, "Confirmação de dados", MB_OKCANCEL | MB_ICONINFORMATION) == IDOK){
 
-                        FILE *filew = fopen(FILE_FDSR, "a");
+                        char typereport[5] = "FDSR";
+                        CHAR namefile[50] = {0};
+                        CHAR dateformat[20] = {0};
+                        CHAR sYear[10], sMonth[10], sDay[10], sHour[10], sMin[10];
+
+                        SYSTEMTIME lt;
+                        GetLocalTime(&lt);
+                        itoa(lt.wYear, sYear, 10);
+                        itoa(lt.wMonth, sMonth, 10);
+                        itoa(lt.wDay, sDay, 10);
+                        itoa(lt.wHour, sHour, 10);
+                        itoa(lt.wMinute, sMin, 10);
+
+                        StringCchCat(namefile, 50, FILE_FDS_COMPANY);
+                        StringCchCat(namefile, 50, sYear);
+                        if(strlen(sMonth) == 1)
+                           StringCchCat(namefile, 50, "0");
+                        StringCchCat(namefile, 50, sMonth);
+                        if(strlen(sDay) == 1)
+                           StringCchCat(namefile, 50, "0");
+                        StringCchCat(namefile, 50, sDay);
+                        if(strlen(sHour) == 1)
+                            StringCchCat(namefile, 50, "0");
+                        StringCchCat(namefile, 50, sHour);
+                        if(strlen(sMin) == 1)
+                           StringCchCat(namefile, 50, "0");
+                        StringCchCat(namefile, 50, sMin);
+                        StringCchCat(namefile, 50, W_EXT);
+
+                        if(strlen(sDay) == 1)
+                           StringCchCat(dateformat, 20, "0");
+                        StringCchCat(dateformat, 20, sDay);
+                        StringCchCat(dateformat, 20, "/");
+                        if(strlen(sMonth) == 1)
+                           StringCchCat(dateformat, 20, "0");
+                        StringCchCat(dateformat, 20, sMonth);
+                        StringCchCat(dateformat, 20, "/");
+                        StringCchCat(dateformat, 20, sYear);
+                        StringCchCat(dateformat, 20, " ");
+                        if(strlen(sHour) == 1)
+                            StringCchCat(dateformat, 20, "0");
+                        StringCchCat(dateformat, 20, sHour);
+                        StringCchCat(dateformat, 20, ":");
+                        if(strlen(sMin) == 1)
+                           StringCchCat(dateformat, 20, "0");
+                        StringCchCat(dateformat, 20, sMin);
+
+                        FILE *filew = fopen(namefile, "w");
                         fputs(concat, filew);
                         fclose(filew);
 
-                        /*
-                        int id = atoi(num_id) + 1;
-                        itoa(id, num_id, 10);
+                        reports = insertNode(reports, reportid, companyid, typereport, namefile, dateformat);
 
-                        FILE *fileidw = fopen(FILE_ID_FDSR, "w");
-                        fputs(num_id, fileidw);
+                        CHAR buff0[MAX_PATH];
+                        StringCbPrintf(buff0, ARRAYSIZE(buff0), TEXT("COMPANY_ID : %d\n"  \
+                                        "TYPE_REPORT : %s\n" \
+                                        "NAME_FILE : %s\n"   \
+                                        "DATE_FORMAT : %s\n"),
+                                reports->companyId, reports->typeReport, reports->nameFile, reports->dateFormat);
+
+                        FILE *repw = fopen(FILE_REPORT, "a");
+                        fputs(buff0, repw);
+                        fclose(repw);
+
+                        CHAR buff[MAX_PATH];
+                        StringCbPrintf (buff, ARRAYSIZE(buff), TEXT("%s | %s | Relatório %s"),
+                        IndData[companyid].companyName, dateformat, typereport);
+
+                        ListBox_InsertString(hwndList7, 0, buff);
+                        ListBox_SetCurSel(hwndList7, 0);
+                        ListBox_SetItemData(hwndList7, 0, reportid);
+
+                        char report_id[10];
+                        reportid = GetLastId(FILE_ID_REPORT) + 1;
+                        itoa(++reportid, report_id, 10);
+
+                        FILE *fileidw = fopen(FILE_ID_REPORT, "w");
+                        fputs(report_id, fileidw);
                         fclose(fileidw);
-                        */
 
 
-
-
-                        for(int j = 1; j < 5; j++)
+                        for(int j = 0; j < 5; j++)
                             free(get_fdsr_data[j]);
 
                         free(concat);
 
-                        MessageBox(FDSRScrn, "Cadastro das informações realizadas!", "Sucesso", MB_OKCANCEL);
+                        MessageBox(FDSRScrn, "Relatório FDSR gerado com sucesso!", "Informação de relatório", MB_OK | MB_ICONINFORMATION);
                         DestroyWindow(FDSRScrn);
                     }
 
@@ -2896,7 +3286,7 @@ LRESULT CALLBACK FDSRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
                                     line = (line == 22) ? 0 : line + 1;
                                 }
                             }else{
-                                MessageBox(FDSRScrn, "Por favor, cadastre um cliente!", "Error", MB_OKCANCEL);
+                                MessageBox(FDSRScrn, "Por favor, cadastre um cliente!", "Aviso de relatório", MB_OK | MB_ICONWARNING);
                                 break;
                             }
 
@@ -2931,14 +3321,4 @@ LRESULT CALLBACK FDSRManager (HWND hwnd, UINT message, WPARAM wParam, LPARAM lPa
 
     return 0;
 }
-
-/*
-Macro para deletar String:
-    1ª parametro : Caixa de listagem
-    2ª parametro : indíce do item
-    ListBox_DeleteString(hwndList5, 0);
-
-*/
-
-
 

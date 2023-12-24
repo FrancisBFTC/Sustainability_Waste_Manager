@@ -10,7 +10,7 @@
  Nome da empresa: Alphabet Inc.
  Investimento mensal : 3500
  Residuos gerados : Cloreto de sódio
- É perigoso?: Não
+ É perigoso? : Não
  Quant. gerada : 40
  Data de destinacao : 15/12/2023
  Data de tratamento : 15/12/2023
@@ -18,7 +18,87 @@
  Nome da empresa: Alphabet Inc.
  Investimento mensal : 1500
  Residuos gerados : Chumbo
- É perigoso?: Sim
+ É perigoso? : Sim
  Quant. gerada : 400
  Data de destinacao : 10/12/2023
  Data de tratamento : 10/12/2023
+ ID: 3
+ Nome da empresa: Intel Corporation
+ Investimento mensal : 6700
+ Residuos gerados : cloreto de sódio, carbono
+ É perigoso? : Sim
+ Quant. gerada : 200
+ Data de destinacao : 14/12/
+ Data de tratamento : 14/12
+ ID: 4
+ Nome da empresa: Microsoft Corporation.
+ Investimento mensal : 23232
+ Residuos gerados : aaaaaaaaaaa
+ É perigoso?: Sim
+ Quant. gerada : 454545
+ Data de destinacao : aaaaaaaaaaa
+ Data de tratamento : aaaaaaaaaaa
+ ID: 5
+ Nome da empresa: SpaceX
+ Investimento mensal : rtrtrtrtrtrt
+ Residuos gerados : rtrtrtrtrtrt
+ É perigoso?: Sim
+ Quant. gerada : 32323232
+ Data de destinacao : rtrtrtrtrtrt
+ Data de tratamento : rtrtrtrtrtrt
+ ID: 6
+ Nome da empresa: Facebook Inc.
+ Investimento mensal : aaaaaaaaaa
+ Residuos gerados : aaaaaaaaaa
+ É perigoso?: Sim
+ Quant. gerada : 333333333
+ Data de destinacao : aaaaaaaaaa
+ Data de tratamento : aaaaaaaaaa
+ ID: 7
+ Nome da empresa: Facebook Inc.
+ Investimento mensal : aaaaaa
+ Residuos gerados : aaaaaa
+ É perigoso?: Sim
+ Quant. gerada : 323232
+ Data de destinacao : aaaaaa
+ Data de tratamento : aaaaaa
+ ID: 8
+ Nome da empresa: Facebook Inc.
+ Investimento mensal : eeeeeeeeeeee
+ Residuos gerados : eeeeeeeeeeee
+ É perigoso?: Sim
+ Quant. gerada : 33333
+ Data de destinacao : eeeeeeeeeeee
+ Data de tratamento : eeeeeeeeeeee
+ ID: 9
+ Nome da empresa: Facebook Inc.
+ Investimento mensal : Facebook
+ Residuos gerados : aaaaaaaa
+ É perigoso?: Sim
+ Quant. gerada : 333333355555555
+ Data de destinacao : aaaaaaaa
+ Data de tratamento : aaaaaaaa
+ ID: 10
+ Nome da empresa: AMD Inc.
+ Investimento mensal : AMD
+ Residuos gerados : AMD
+ É perigoso?: Sim
+ Quant. gerada : 232323
+ Data de destinacao : AMD
+ Data de tratamento : AMD
+ ID: 11
+ Nome da empresa: Bethesda
+ Investimento mensal : Bethesda
+ Residuos gerados : Bethesda
+ É perigoso?: Sim
+ Quant. gerada : 232323
+ Data de destinacao : Bethesda
+ Data de tratamento : Bethesda
+ ID: 12
+ Nome da empresa: Tinder Inc.
+ Investimento mensal : Tinder
+ Residuos gerados : Tinder
+ É perigoso?: Não
+ Quant. gerada : 333333
+ Data de destinacao : Tinder
+ Data de tratamento : Tinder

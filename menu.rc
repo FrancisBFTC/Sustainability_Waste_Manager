@@ -1,5 +1,12 @@
 #include "wastemanager.h"
 
+A ICON MOVEABLE PURE LOADONCALL DISCARDABLE "icons\\waste.ico"
+
+IDI_WASTE   ICON    "icons\\waste.ico"
+IDI_LOGIN   ICON    "icons\\login.ico"
+IDI_REPORT  ICON    "icons\\report.ico"
+
+
 WasteMenu MENU {
     POPUP "&Arquivos" {
         POPUP "&Novo" {

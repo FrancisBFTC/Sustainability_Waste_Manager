@@ -11,6 +11,7 @@
 #include <windows.h>
 #include <winuser.h>
 #include <windowsx.h>
+#include <commdlg.h>
 
 
 #pragma comment(lib, "comctl32.lib")
@@ -56,6 +57,11 @@ version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' la
 #define W_EXT               ".w"
 #define FILE_MTR_COMPANY    "data/reports/MTR"
 #define FILE_CDF_COMPANY    "data/reports/CDF"
+#define FILE_FDS_COMPANY    "data/reports/FDS"
+
+#define IDI_WASTE       178
+#define IDI_LOGIN       179
+#define IDI_REPORT      180
 
 LRESULT CALLBACK LoginManager (HWND, UINT, WPARAM, LPARAM);
 LRESULT CALLBACK SignManager (HWND, UINT, WPARAM, LPARAM);
@@ -77,6 +83,9 @@ HWND LoginScrn, SignScrn, CostumerScrn,
 HINSTANCE instance1, instance2, instance3,
           instance4, instance5, instance6,
           instance7, instance8, instance9;
+
+LPSTR fileArgv = NULL;
+CHAR *data;
 
 HFONT hFont;
 HWND hwndList1, hwndList2, hwndList3, hwndList4, hwndList5, hwndList6, hwndList7;
@@ -106,7 +115,7 @@ CHAR classNameMenu[ ]   = "WasteMenu";
 HWND lEdit1, lEdit2;
 HWND sEdit1, sEdit2, sEdit3, sEdit4;
 
-HWND cEdit[22];
+HWND cEdit[23];
 HWND wEdit[6];
 HWND spltBtn1, spltBtn2;
 HWND mEdit[7];
@@ -120,7 +129,7 @@ HWND fdsrEdit[5];
 HWND weekCollection;
 char byteb[ ] = " ";
 
-HMENU hSplitMenu, hSplitMenu2, hSplitMenu3, hSplitMenu4, hSplitMenu5, hSplitMenu6, hSplitMenu7;
+HMENU hSplitMenu, hSplitMenu2, hSplitMenu3, hSplitMenu4, hSplitMenu5, hSplitMenu6, hSplitMenu7, hSplitMenu8;
 CHAR *months[ ] =   {
                         "Janeiro", "Fevereiro", "Março", "Abril", "Maio",
                         "Junho", "Agosto", "Setembro", "Outubro", "Novembro",
@@ -179,7 +188,7 @@ const char *cBanner_cdfEdit1[8] = {"Empresa geradora", "CNPJ do tratador", "Loca
 
 const wchar_t *cBanner_fdsrEdit[5] = {L"", L"Identificacao do residuo quimico", L"Componentes quimicos do residuo", L"Perigos inerentes do residuo",
                                       L"Medidas de primeiros socorros"};
-const char *cBanner_fdsrEdit1[5] =   {"", "Identificação do resíduo químico", "Componentes químicos do resíduo", "Perigos inerentes do resíduo",
+const char *cBanner_fdsrEdit1[5] =   {"Empresa Geradora", "Identificação do resíduo químico", "Componentes químicos do resíduo", "Perigos inerentes do resíduo",
                                       "Medidas de primeiros socorros"};
 
 
@@ -203,6 +212,7 @@ bool compselected = false;
 bool compselected2 = false;
 bool compselected3 = false;
 bool compselected4 = false;
+bool compselected5 = false;
 bool dateselected = false;
 bool yesstate = false;
 
@@ -331,6 +341,7 @@ bool yesstate = false;
 #define QUI_OP 175
 #define SEX_OP 176
 
+#define COSTUMER_UPD    177
 #define COSTUMER_LIST   200
 
 #define VK_ENTER 0x0D
