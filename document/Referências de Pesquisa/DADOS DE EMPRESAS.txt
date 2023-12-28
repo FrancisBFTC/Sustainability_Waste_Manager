@@ -1,0 +1,515 @@
+1
+--------------------------------------------------------------------
+CNPJ
+84.959.394/0001-08
+
+Razão Social
+METALURGICA CIRCULO INDUSTRIA E COMERCIO LTDA
+
+Nome Fantasia
+METALURGICA CIRCULO INDUSTRIA E COMERCIO
+
+Atividade
+Fabricação de Máquinas e Equipamentos Para a Agricultura e Pecuária, Peças e Acessórios, Exceto Para Irrigação
+
+Endereço
+Rua Pioneiro Carlos Hofferer, 98 Jardim Hanover Maringa, PR, CEP: 87.065-620, Brasil
+
+Data Abertura
+31/01/1992
+
+Natureza Jurídica
+Sociedade Empresária Limitada (206-2)
+
+Situação
+ATIVA desde 30/10/2004
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+EXCLUIDO
+
+Enquadramento de Porte
+EPP
+--------------------------------------------------------------------
+
+2
+--------------------------------------------------------------------
+CNPJ
+49.393.440/0001-45
+
+Razão Social
+MALBI INDUSTRIA E COMERCIO LTDA
+
+Nome Fantasia
+MALBI
+
+Atividade
+Fabricação de Outras Máquinas e Equipamentos de Uso Geral Não Especificados Anteriormente, Peças e Acessórios
+
+Endereço
+Avenida Washinton Luiz, 1550, Desconhecido, Espirito Santo do Pinhal, SP, CEP: 13.990-000 Brasil
+
+Data Abertura
+05/01/1979
+
+Natureza Jurídica
+Sociedade Empresária Limitada (206-2)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+OPTANTE desde 01/07/2007
+
+Enquadramento de Porte
+EPP
+--------------------------------------------------------------------
+
+3
+--------------------------------------------------------------------
+CNPJ
+01.965.363/0001-24
+
+Razão Social
+SUMIDENSO DO BRASIL INDUSTRIAS ELETRICAS LTDA
+
+Nome Fantasia
+Não Disponível
+
+Atividade
+Fabricação de Material Elétrico e Eletrônico Para Veículos Automotores, Exceto Baterias
+
+Endereço
+Rodovia Br-262, Patafufo, Para de Minas, MG, CEP: 35.661-390, Brasil
+
+Data Abertura
+16/06/1997
+
+Natureza Jurídica
+Sociedade Empresária Limitada (206-2)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+NAO OPTANTE
+
+Enquadramento de Porte
+Sem Enquadramento
+--------------------------------------------------------------------
+
+4
+--------------------------------------------------------------------
+CNPJ
+61.695.227/0001-93
+
+Razão Social
+ELETROPAULO METROPOLITANA ELETRICIDADE DE SAO PAULO SA
+
+Nome Fantasia
+ENEL DISTRIBUICAO SAO PAULO
+
+Atividade
+Distribuição de Energia Elétrica
+
+Endereço
+Avenida das Nacoes Unidas, 14401, Vila Gertrudes, Sao Paulo, SP, CEP: 04.794-000, Brasil
+
+Data Abertura
+08/09/1971
+
+Natureza Jurídica
+Sociedade Anônima Aberta (204-6)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+NAO OPTANTE
+
+Enquadramento de Porte
+Sem Enquadramento
+--------------------------------------------------------------------
+
+5
+--------------------------------------------------------------------
+CNPJ
+59.105.999/0001-86
+
+Razão Social
+WHIRLPOOL SA
+
+Nome Fantasia
+UNIDADE DE ELETRODOMESTICOS
+
+Atividade
+Fabricação de Fogões, Refrigeradores e Máquinas de Lavar e Secar Para Uso Doméstico, Peças e Acessórios
+
+Endereço
+Rua Olympia Semeraro, 675, Jardim Santa Emilia, Sao Paulo, SP, CEP: 04.183-090, Brasil
+
+Data Abertura
+08/08/1966
+
+Natureza Jurídica
+Sociedade Anônima Aberta (204-6)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+NAO OPTANTE
+
+Enquadramento de Porte
+Sem Enquadramento
+--------------------------------------------------------------------
+
+6
+--------------------------------------------------------------------
+CNPJ
+85.101.806/0001-29
+
+Razão Social
+ELITEC USINAGEM DE ALUMINIO LTDA
+
+Nome Fantasia
+Não Disponível
+
+Atividade
+Fabricação de Artigos de Metal Para Uso Doméstico e Pessoal
+
+Endereço
+Rua Professor Hermann Lange, 4100, Fidelis, Blumenau, SC, CEP: 89.060-300, Brasil
+
+Data Abertura
+09/07/1991
+
+Natureza Jurídica
+Sociedade Empresária Limitada (206-2)
+
+Situção
+ATIVA desde 23/12/2000
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+OPTANTE desde 01/07/2007
+
+Enquadramento de Porte
+EPP
+--------------------------------------------------------------------
+
+7
+--------------------------------------------------------------------
+CNPJ
+46.874.947/0001-22
+
+Razão Social
+TEMPER CRUZ IMPORTACAO E EXPORTACAO DE VIDROS E ESQUADRIAS DE METAL LTDA
+
+Nome Fantasia
+Não Disponível
+
+Atividade
+Fabricação de Esquadrias de Metal
+
+Endereço
+Rua Ovidio Paulo de Oliveira, 85, Loteamento Jardim Bica da Gloria, Tremembe, SP, CEP: 12.125-206, Brasil
+
+Data Abertura
+28/08/1981
+
+Natureza Jurídica
+Sociedade Empresária Limitada (206-2)
+
+Situção
+ATIVA desde 23/12/2000
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+OPTANTE desde 01/07/2007
+
+Enquadramento de Porte
+EPP
+--------------------------------------------------------------------
+
+8
+--------------------------------------------------------------------
+CNPJ
+72.388.796/0001-02
+
+Razão Social
+MARIA DE FATIMA CASTELLON CIA LTDA
+
+Nome Fantasia
+CB VISUAL
+
+Atividade
+Fabricação de Painéis e Letreiros Luminosos
+
+Endereço
+Avenida das Araucarias, 6920, Chapada, Araucaria, PR, CEP: 83.707-752, Brasil
+
+Data Abertura
+28/06/1993
+
+Natureza Jurídica
+Sociedade Empresária Limitada (206-2)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+EXCLUIDO
+
+Enquadramento de Porte
+Sem Enquadramento
+--------------------------------------------------------------------
+
+9
+--------------------------------------------------------------------
+CNPJ
+72.712.482/0001-13
+
+Razão Social
+RIFLON INDUSTRIA E COMERCIO DE PLASTICOS LTDA
+
+Nome Fantasia
+RIFLON
+
+Atividade
+Fabricação de Artefatos de Material Plástico Para Usos Industriais
+
+Endereço
+Avenida Castelo Branco, 3877, Universitario, Sete Lagoas, MG, CEP: 35.702-134, Brasil
+
+Data Abertura
+27/07/1993
+
+Natureza Jurídica
+Sociedade Empresária Limitada (206-2)
+
+Situção
+ATIVA desde 09/10/2004
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+EXCLUIDO
+
+Enquadramento de Porte
+EPP
+--------------------------------------------------------------------
+
+10
+--------------------------------------------------------------------
+CNPJ
+33.017.039/0001-70
+
+Razão Social
+SAM INDUSTRIAS SA FALIDO
+
+Nome Fantasia
+FICAPMARVIN
+
+Atividade
+Fabricação de Componentes Eletrônicos
+
+Endereço
+Avenida Marechal Floriano Peixoto, Centro, Nova Iguacu, RJ, CEP: 26.210-000, Brasil
+
+Data Abertura
+12/03/1971
+
+Natureza Jurídica
+Sociedade Anônima Aberta (204-6)
+
+Situção
+ATIVA desde 09/11/2020
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+NAO OPTANTE
+
+Enquadramento de Porte
+Sem Enquadramento
+--------------------------------------------------------------------
+
+11
+--------------------------------------------------------------------
+CNPJ
+61.142.550/0001-30
+
+Razão Social
+IHARABRAS SA INDUSTRIAS QUIMICAS
+
+Nome Fantasia
+IHARABRAS
+
+Atividade
+Fabricação de Defensivos Agrícolas
+
+Endereço
+Avenida Liberdade, 1701, Iporanga, Sorocaba, SP, CEP: 18.087-170, Brasil
+
+Data Abertura
+21/07/1966
+
+Natureza Jurídica
+Sociedade Anônima Fechada (205-4)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+NAO OPTANTE
+
+Enquadramento de Porte
+Sem Enquadramento
+--------------------------------------------------------------------
+
+12
+--------------------------------------------------------------------
+CNPJ
+61.413.282/0001-43
+
+Razão Social
+LORENZETTI SA INDUSTRIAS BRASILEIRAS ELETROMETALURGICAS
+
+Nome Fantasia
+Não Disponível
+
+Atividade
+Fabricação de Outros Aparelhos Eletrodomésticos Não Especificados Anteriormente, Peças e Acessórios
+
+Endereço
+Avenida Presidente Wilson 1230, E, Mooca, Sao Paulo, SP, Brasil
+
+Data Abertura
+28/07/1966
+
+Natureza Jurídica
+Sociedade Anônima Fechada (205-4)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+NAO OPTANTE
+
+Enquadramento de Porte
+Sem Enquadramento
+--------------------------------------------------------------------
+
+13
+--------------------------------------------------------------------
+CNPJ
+00.322.818/0001-20
+
+Razão Social
+INDUSTRIAS NUCLEARES DO BRASIL SA INB
+
+Nome Fantasia
+INB
+
+Atividade
+Elaboração de Combustíveis Nucleares
+
+Endereço
+Avenida Rio Branco, 1, Centro, Rio de Janeiro, RJ, CEP: 20.090-003, Brasil
+
+Data Abertura
+17/05/1972
+
+Natureza Jurídica
+Empresa Pública (201-1)
+
+Situção
+ATIVA desde 03/11/2005
+
+Situação Especial
+Não Disponível
+
+Tipo Unidade
+MATRIZ
+
+Opção pelo Simples
+NAO OPTANTE
+
+Enquadramento de Porte
+Sem Enquadramento
+
+Código CNAE
+C-2019-3/01
+--------------------------------------------------------------------
+
+* Pesquisar sobre Códigos CNAE
+* dados obtidos pelo link:
+https://www.econodata.com.br/consulta-empresa
+
+https://portalmeibrasil.com/ct/?gclid=CjwKCAiA04arBhAkEiwAuNOsIhrmDFVgnlG4A1hbaXFhTbfc3CKPv03ns0BdxMrdn6C5JXK3BvV_ChoCIVwQAvD_BwE

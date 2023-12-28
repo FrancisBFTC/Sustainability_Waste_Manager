@@ -1,0 +1,13 @@
+A fabricação de processadores e chips eletrônicos gera diversos resíduos químicos, alguns dos quais podem ser prejudiciais ao meio ambiente se não forem tratados adequadamente. Aqui estão cinco principais resíduos químicos associados a essa indústria:
+
+Efluentes Químicos: Águas residuais que contêm produtos químicos utilizados no processo de fabricação, como ácidos e solventes.
+
+Gases Tóxicos: Emissões gasosas resultantes de processos de fabricação, incluindo gases como dióxido de enxofre, óxidos de nitrogênio e compostos orgânicos voláteis.
+
+Resíduos de Fotolitografia: Processos de fotolitografia utilizados na fabricação de chips podem gerar resíduos contendo produtos químicos como reveladores, fixadores e solventes.
+
+Resíduos de Metais Pesados: A fabricação de chips pode envolver o uso de metais pesados, como chumbo, mercúrio e cádmio, que podem acabar nos resíduos do processo.
+
+Produtos Químicos de Limpeza: Substâncias químicas usadas na limpeza de equipamentos e na manutenção das instalações, incluindo solventes e agentes de limpeza agressivos.
+
+É importante notar que muitas empresas estão trabalhando ativamente para minimizar a geração desses resíduos por meio de práticas sustentáveis e tecnologias de reciclagem. O gerenciamento adequado desses resíduos é crucial para reduzir os impactos ambientais associados à produção de componentes eletrônicos.

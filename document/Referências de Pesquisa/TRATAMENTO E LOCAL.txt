@@ -1,0 +1,41 @@
+Tipo de Resíduo: Óleo Industrial Usado
+
+Local de Destinação: Centrais de Tratamento de Resíduos Perigosos
+Forma de Tratamento: Reciclagem por Meio de Processos de Refino, Tratamento Químico para Remoção de Impurezas e Reutilização.
+
+Tipo de Resíduo: Produtos Químicos Tóxicos Vencidos
+
+Local de Destinação: Incineradoras Especializadas
+Forma de Tratamento: Incineração a Temperaturas Elevadas para Destruição Completa dos Produtos Químicos, com Controle de Emissões.
+
+Tipo de Resíduo: Resíduos de Laboratório Contendo Substâncias Perigosas
+
+Local de Destinação: Unidades de Tratamento de Resíduos Químicos
+Forma de Tratamento: Neutralização Química, Separação e Filtração para Recuperação de Produtos, e Descarte Seguro de Subprodutos Não Recicláveis.
+
+Tipo de Resíduo: Lâmpadas Fluorescentes
+
+Local de Destinação: Centrais de Reciclagem de Lâmpadas
+Forma de Tratamento: Separação de Componentes (vidro, metal, pó fosfórico), Reciclagem de Vidro e Metal, e Captura de Mercúrio para Recuperação.
+
+Tipo de Resíduo: Resíduos de Pesticidas
+
+Local de Destinação: Estações de Tratamento de Resíduos Químicos Agrícolas
+Forma de Tratamento: Descontaminação por Processos Químicos ou Biológicos, Separação de Substâncias Ativas para Reutilização, e Descarte Seguro dos Resíduos Não Recicláveis.
+
+É importante ressaltar que o tratamento de resíduos Classe I deve seguir regulamentações ambientais rigorosas para garantir a segurança e a minimização do impacto ambiental. Certifique-se de verificar as normas locais e regulamentações específicas ao lidar com esses tipos de resíduos.
+
+Tipo de Resíduo: Resíduos Sólidos Urbanos (RSU)
+
+Método de Tratamento: Aterro Sanitário
+Local de Destinação: Aterro Sanitário Municipal ou Regional, projetado para minimizar os impactos ambientais e garantir a decomposição controlada dos resíduos.
+
+Tipo de Resíduo: Resíduos de Madeira
+
+Método de Tratamento: Carbonização
+Local de Destinação: Unidades de Carbonização de Resíduos de Madeira, onde a madeira é submetida a um processo controlado de decomposição térmica na ausência de oxigênio para produzir carvão vegetal e subprodutos.
+
+Tipo de Resíduo: Resíduos Hospitalares
+
+Método de Tratamento: Incineração
+Local de Destinação: Incineradoras Especializadas em Resíduos Hospitalares, que operam em altas temperaturas para destruir patógenos e reduzir o volume de resíduos, com monitoramento rigoroso das emissões.
